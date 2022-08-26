@@ -1,4 +1,9 @@
-<!--?title Finding the Eulerian path in O(M)     -->
+---
+title: Finding the Eulerian path in O(M)
+tags:
+  - Translated
+e_maxx_link: euler_path
+---
 # Finding the Eulerian path in $O(M)$
 
 A Eulerian path is a path in a graph that passes through all of its edges exactly once.
@@ -45,7 +50,7 @@ until St is empty
     put the second end of this edge in St;
 ```
 
-It is easy to check the equivalence of these two forms of the algorithm. However, the second form is obviously faster, and the code will be much more.
+It is easy to check the equivalence of these two forms of the algorithm. However, the second form is obviously faster, and the code will be much more efficient.
 
 ## The Domino problem
 
@@ -82,8 +87,12 @@ int main() {
     }
 
     int first = 0;
-    while (!deg[first])
+    while (first < n && !deg[first])
         ++first;
+    if (first == n) {
+        cout << -1;
+        return 0;
+    }
 
     int v1 = -1, v2 = -1;
     bool bad = false;
@@ -150,3 +159,7 @@ int main() {
     }
 }
 ```
+### Practice problems:
+
+- [CSES : Mail Delivery](https://cses.fi/problemset/task/1691)
+- [CSES : Teleporters Path](https://cses.fi/problemset/task/1693)

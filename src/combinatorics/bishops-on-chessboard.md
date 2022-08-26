@@ -1,4 +1,8 @@
-<!--?title Placing Bishops on a Chessboard -->
+---
+tags:
+  - Translated
+e_maxx_link: bishops_arrangement
+---
 
 # Placing Bishops on a Chessboard
 

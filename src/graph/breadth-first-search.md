@@ -1,6 +1,11 @@
-<!--?title Breadth First Search -->
+---
+tags:
+  - Translated
+e_maxx_link: bfs
+---
 
 # Breadth-first search
+
 Breadth first search is one of the basic and essential searching algorithms on graphs.
 
 As a result of how the algorithm works, the path found by breadth first search to any node is the shortest path to that node, i.e the path that contains the smallest number of edges in unweighted graphs.
@@ -27,50 +32,93 @@ You can also calculate the lengths of the shortest paths (which just requires ma
 
 ## Implementation
 
-We write code for the described algorithm in C++.
+We write code for the described algorithm in C++ and Java.
 
-```cpp
-vector<vector<int>> adj;  // adjacency list representation
-int n; // number of nodes
-int s; // source vertex
+=== "C++"
+    ```cpp
+    vector<vector<int>> adj;  // adjacency list representation
+    int n; // number of nodes
+    int s; // source vertex
 
-queue<int> q;
-vector<bool> used(n);
-vector<int> d(n), p(n);
+    queue<int> q;
+    vector<bool> used(n);
+    vector<int> d(n), p(n);
 
-q.push(s);
-used[s] = true;
-p[s] = -1;
-while (!q.empty()) {
-    int v = q.front();
-    q.pop();
-    for (int u : adj[v]) {
-        if (!used[u]) {
-            used[u] = true;
-            q.push(u);
-            d[u] = d[v] + 1;
-            p[u] = v;
+    q.push(s);
+    used[s] = true;
+    p[s] = -1;
+    while (!q.empty()) {
+        int v = q.front();
+        q.pop();
+        for (int u : adj[v]) {
+            if (!used[u]) {
+                used[u] = true;
+                q.push(u);
+                d[u] = d[v] + 1;
+                p[u] = v;
+            }
         }
     }
-}
-```
+    ```
+=== "Java"
+    ```java
+    ArrayList<ArrayList<Integer>> adj = new ArrayList<>(); // adjacency list representation
+        
+    int n; // number of nodes
+    int s; // source vertex
 
+
+    LinkedList<Integer> q = new LinkedList<Integer>();
+    boolean used[] = new boolean[n];
+    int d[] = new int[n];
+    int p[] = new int[n];
+
+    q.push(s);
+    used[s] = true;
+    p[s] = -1;
+    while (!q.isEmpty()) {
+        int v = q.pop();
+        for (int u : adj.get(v)) {
+            if (!used[u]) {
+                used[u] = true;
+                q.push(u);
+                d[u] = d[v] + 1;
+                p[u] = v;
+            }
+        }
+    }
+    ```
+    
 If we have to restore and display the shortest path from the source to some vertex $u$, it can be done in the following manner:
-
-```cpp
-if (!used[u]) {
-    cout << "No path!";
-} else {
-    vector<int> path;
-    for (int v = u; v != -1; v = p[v])
-        path.push_back(v);
-    reverse(path.begin(), path.end());
-    cout << "Path: ";
-    for (int v : path)
-        cout << v << " ";
-}
-```
-
+    
+=== "C++"
+    ```cpp
+    if (!used[u]) {
+        cout << "No path!";
+    } else {
+        vector<int> path;
+        for (int v = u; v != -1; v = p[v])
+            path.push_back(v);
+        reverse(path.begin(), path.end());
+        cout << "Path: ";
+        for (int v : path)
+            cout << v << " ";
+    }
+    ```
+=== "Java"
+    ```java
+    if (!used[u]) {
+        System.out.println("No path!");
+    } else {
+        ArrayList<Integer> path = new ArrayList<Integer>();
+        for (int v = u; v != -1; v = p[v])
+            path.add(v);
+        Collections.reverse(path);
+        for(int v : path)
+            System.out.println(v);
+    }
+    ```
+    
 ## Applications of BFS
 
 * Find the shortest path from a source to other vertices in an unweighted graph.
@@ -82,7 +130,7 @@ Thus, we perform normal BFS from each of the vertices, but do not reset the arra
 * Finding a solution to a problem or a game with the least number of moves, if each state of the game can be represented by a vertex of the graph, and the transitions from one state to the other are the edges of the graph.
 
 * Finding the shortest path in a graph with weights 0 or 1:
-This requires just a little modification to normal breadth-first search: Instead of maintaining array $used[]$, we will now check if the distance to vertex is shorter than current found distance, then if the current edge is of zero weight, we add it to the front of the queue else we add it to the back of the queue.This modification is explained in more detail in the article [0-1 BFS](graph/01_bfs.html).
+This requires just a little modification to normal breadth-first search: Instead of maintaining array $used[]$, we will now check if the distance to vertex is shorter than current found distance, then if the current edge is of zero weight, we add it to the front of the queue else we add it to the back of the queue.This modification is explained in more detail in the article [0-1 BFS](01_bfs.md).
 
 * Finding the shortest cycle in a directed unweighted graph:
 Start a breadth-first search from each vertex.
@@ -116,8 +164,8 @@ After that we run a BFS to find the shortest path from the starting vertex $(s, 
 * [SPOJ: WATER](http://www.spoj.com/problems/WATER)
 * [SPOJ: MICE AND MAZE](http://www.spoj.com/problems/MICEMAZE/)
 * [Timus: Caravans](http://acm.timus.ru/problem.aspx?space=1&num=2034)
-* [DevSkills - Holloween Party](https://devskill.com/CodingProblems/ViewProblem/60)
-* [DevSkills - Ohani And The Link Cut Tree](https://devskill.com/CodingProblems/ViewProblem/150)
+* [DevSkill - Holloween Party (archived)](http://web.archive.org/web/20200930162803/http://www.devskill.com/CodingProblems/ViewProblem/60)
+* [DevSkill - Ohani And The Link Cut Tree (archived)](http://web.archive.org/web/20170216192002/http://devskill.com:80/CodingProblems/ViewProblem/150)
 * [SPOJ - Spiky Mazes](http://www.spoj.com/problems/SPIKES/)
 * [SPOJ - Four Chips (hard)](http://www.spoj.com/problems/ADV04F1/)
 * [SPOJ - Inversion Sort](http://www.spoj.com/problems/INVESORT/)
@@ -132,3 +180,6 @@ After that we run a BFS to find the shortest path from the starting vertex $(s, 
 * [Codeforces - Cycle in Maze](http://codeforces.com/contest/769/problem/C)
 * [UVA - 11312 - Flipping Frustration](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2287)
 * [SPOJ - Ada and Cycle](http://www.spoj.com/problems/ADACYCLE/)
+* [CSES - Labyrinth](https://cses.fi/problemset/task/1193)
+* [CSES - Message Route](https://cses.fi/problemset/result/794325/)
+* [CSES - Monsters](https://cses.fi/problemset/task/1194)

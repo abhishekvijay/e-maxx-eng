@@ -1,9 +1,13 @@
-<!--?title Minimum stack / Minimum queue -->
+---
+tags:
+  - Translated
+e_maxx_link: stacks_for_minima
+---
 
 # Minimum stack / Minimum queue
 
 In this article we will consider three problems: 
-first we will modify a stack in a way that allows up to find the smallest element of the stack in $O(1)$, then we will do the same thing with a queue, and finally we will use these data structures to find the minimum in all subarrays of a fixed length in an array in $O(n)$
+first we will modify a stack in a way that allows us to find the smallest element of the stack in $O(1)$, then we will do the same thing with a queue, and finally we will use these data structures to find the minimum in all subarrays of a fixed length in an array in $O(n)$
 
 ## Stack modification
 
@@ -171,6 +175,7 @@ s2.pop();
 
 Suppose we are given an array $A$ of length $N$ and a given $M \le N$.
 We have to find the minimum of each subarray of length $M$ in this array, i.e. we have to find:
+
 $$\min_{0 \le i \le M-1} A[i], \min_{1 \le i \le M} A[i], \min_{2 \le i \le M+1} A[i],~\dots~, \min_{N-M \le i \le N-1} A[i]$$
 
 We have to solve this problem in linear time, i.e. $O(n)$.

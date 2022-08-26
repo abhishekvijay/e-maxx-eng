@@ -1,4 +1,8 @@
-<!--?title Finding the largest zero submatrix -->
+---
+tags:
+  - Translated
+e_maxx_link: maximum_zero_submatrix
+---
 
 # Finding the largest zero submatrix
 

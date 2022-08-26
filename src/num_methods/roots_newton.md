@@ -1,4 +1,8 @@
-<!--?title Newton's method for finding roots -->
+---
+tags:
+  - Translated
+e_maxx_link: roots_newton
+---
 
 # Newton's method for finding roots 
 

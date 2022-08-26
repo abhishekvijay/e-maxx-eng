@@ -1,4 +1,8 @@
-<!--?title Primitive Root -->
+---
+tags:
+  - Translated
+e_maxx_link: primitive_root
+---
 
 # Primitive Root
 

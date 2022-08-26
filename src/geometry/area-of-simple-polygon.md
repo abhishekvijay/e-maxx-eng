@@ -1,5 +1,9 @@
-<!--?title Finding area of simple polygon in O(N) -->
-
+---
+title: Finding area of simple polygon in O(N)
+tags:
+  - Translated
+e_maxx_link: polygon_area
+---
 # Finding area of simple polygon in $O(N)$
 
 Let a simple polygon (i.e. without self intersection, not necessarily convex) be given. It is required to calculate its area given its vertices.

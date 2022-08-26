@@ -1,4 +1,8 @@
-<!--?title Discrete Root -->
+---
+tags:
+  - Translated
+e_maxx_link: discrete_root
+---
 
 # Discrete Root
 
@@ -8,9 +12,9 @@ $x^k \equiv a \pmod n$
 
 ## The algorithm
 
-We will solve this problem by reducing it to the [discrete logarithm problem](./algebra/discrete-log.html).
+We will solve this problem by reducing it to the [discrete logarithm problem](discrete-log.md).
 
-Let's apply the concept of a [primitive root](./algebra/primitive-root.html) modulo $n$. Let $g$ be a primitive root modulo $n$. Note that since $n$ is prime, it must exist, and it can be found in $O(Ans \cdot \log \phi (n) \cdot \log n) = O(Ans \cdot \log^2 n)$ plus time of factoring $\phi (n)$.
+Let's apply the concept of a [primitive root](primitive-root.md) modulo $n$. Let $g$ be a primitive root modulo $n$. Note that since $n$ is prime, it must exist, and it can be found in $O(Ans \cdot \log \phi (n) \cdot \log n) = O(Ans \cdot \log^2 n)$ plus time of factoring $\phi (n)$.
 
 We can easily discard the case where $a = 0$. In this case, obviously there is only one answer: $x = 0$.
 

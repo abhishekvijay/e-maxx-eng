@@ -1,4 +1,8 @@
-<!--?title Rank of a matrix-->
+---
+tags:
+  - Translated
+e_maxx_link: matrix_rank
+---
 
 # Finding the rank of a matrix
 
@@ -11,7 +15,7 @@ Note that if the matrix is square and its determinant is non-zero, then the rank
 
 ## Algorithm
 
-You can search for the rank using [Gaussian elimination](./linear_algebra/linear-system-gauss.html). We will perform the same operations as when solving the system or finding its determinant. But if at any step in the $i$-th column there are no rows with an non-empty entry among those that we didn't selected already, then we skip this step.
+You can search for the rank using [Gaussian elimination](linear-system-gauss.md). We will perform the same operations as when solving the system or finding its determinant. But if at any step in the $i$-th column there are no rows with an non-empty entry among those that we didn't selected already, then we skip this step.
 Otherwise, if we have found a row with a non-zero element in the $i$-th column during the $i$-th step, then we mark this row as a selected one, increase the rank by one (initially the rank is set equal to $0$), and perform the usual operations of taking this row away from the rest.
 
 ## Complexity
@@ -20,7 +24,7 @@ This algorithm runs in $\mathcal{O}(n^3)$.
 
 ## Implementation
 
-```cpp matrix-rank
+```{.cpp file=matrix-rank}
 const double EPS = 1E-9;
 
 int compute_rank(vector<vector<double>> A) {

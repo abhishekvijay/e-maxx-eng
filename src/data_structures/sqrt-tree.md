@@ -1,4 +1,7 @@
-<!--?title Sqrt Tree-->
+---
+tags:
+  - Original
+---
 
 # Sqrt Tree
 

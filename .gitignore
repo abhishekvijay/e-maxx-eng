@@ -2,3 +2,11 @@ target
 *.swp
 *.sublime-project
 *.sublime-workspace
+converted.html
+converted.pdf
+/output
+/public
+.firebase/
+firebase-debug.log
+
+authors.json
