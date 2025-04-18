@@ -119,7 +119,6 @@ void find_cycle() {
         for (int v = cycle_end; v != cycle_start; v = parent[v])
             cycle.push_back(v);
         cycle.push_back(cycle_start);
-        reverse(cycle.begin(), cycle.end());
 
         cout << "Cycle found: ";
         for (int v : cycle)
@@ -130,5 +129,6 @@ void find_cycle() {
 ```
 ### Practice problems:
 
+- [AtCoder : Reachability in Functional Graph](https://atcoder.jp/contests/abc357/tasks/abc357_e)
 - [CSES : Round Trip](https://cses.fi/problemset/task/1669)
 - [CSES : Round Trip II](https://cses.fi/problemset/task/1678/)

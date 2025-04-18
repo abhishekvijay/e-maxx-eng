@@ -22,11 +22,11 @@ The algorithm first finds the bottom-most point $P_0$. If there are multiple poi
 with the same Y coordinate, the one with the smaller X coordinate is considered. This
 step takes $\mathcal{O}(N)$ time.
 
-Next, all the other points are sorted by polar angle in counterclockwise order.
-If the polar angle between two points is the same, the nearest point is chosen instead.
+Next, all the other points are sorted by polar angle in clockwise order.
+If the polar angle between two or more points is the same, the tie should be broken by distance from $P_0$, in increasing order.
 
 Then we iterate through each point one by one, and make sure that the current
-point and the two before it make a counterclockwise turn, otherwise the previous
+point and the two before it make a clockwise turn, otherwise the previous
 point is discarded, since it would make a non-convex shape. Checking for clockwise or anticlockwise
 nature can be done by checking the [orientation](oriented-triangle-area.md).
 
@@ -47,6 +47,9 @@ of the algorithm, otherwise you wouldn't get the smallest convex hull.
 ```{.cpp file=graham_scan}
 struct pt {
     double x, y;
+    bool operator == (pt const& t) const {
+        return x == t.x && y == t.y;
+    }
 };
 
 int orientation(pt a, pt b, pt c) {
@@ -85,6 +88,9 @@ void convex_hull(vector<pt>& a, bool include_collinear = false) {
             st.pop_back();
         st.push_back(a[i]);
     }
+
+    if (include_collinear == false && st.size() == 2 && st[0] == st[1])
+        st.pop_back();
 
     a = st;
 }
@@ -188,6 +194,6 @@ void convex_hull(vector<pt>& a, bool include_collinear = false) {
 
 * [Kattis - Convex Hull](https://open.kattis.com/problems/convexhull)
 * [Kattis - Keep the Parade Safe](https://open.kattis.com/problems/parade)
-* [URI 1464 - Onion Layers](https://www.urionlinejudge.com.br/judge/en/problems/view/1464)
+* [Latin American Regionals 2006 - Onion Layers](https://matcomgrader.com/problem/9413/onion-layers/)
 * [Timus 1185: Wall](http://acm.timus.ru/problem.aspx?space=1&num=1185)
 * [Usaco 2014 January Contest, Gold - Cow Curling](http://usaco.org/index.php?page=viewproblem2&cpid=382)

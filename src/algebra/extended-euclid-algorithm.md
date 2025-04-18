@@ -10,7 +10,7 @@ While the [Euclidean algorithm](euclid-algorithm.md) calculates only the greates
 
 $$a \cdot x + b \cdot y = \gcd(a, b)$$
 
-It's important to note, that we can always find such a representation, for instance $\gcd(55, 80) = 5$ therefore we can represent $5$ as a linear combination with the terms $55$ and $80$: $55 \cdot 3 + 80 \cdot (-2) = 5$ 
+It's important to note that by [Bézout's identity](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity) we can always find such a representation. For instance, $\gcd(55, 80) = 5$, therefore we can represent $5$ as a linear combination with the terms $55$ and $80$: $55 \cdot 3 + 80 \cdot (-2) = 5$ 
 
 A more general form of that problem is discussed in the article about [Linear Diophantine Equations](linear-diophantine-equation.md).
 It will build upon this algorithm.
@@ -93,20 +93,43 @@ int gcd(int a, int b, int& x, int& y) {
 }
 ```
 
-If you look closely at the variable `a1` and `b1`, you can notice that they taking exactly the same values as in the iterative version of the normal [Euclidean algorithm](euclid-algorithm.md). So the algorithm will at least compute the correct GCD.
+If you look closely at the variables `a1` and `b1`, you can notice that they take exactly the same values as in the iterative version of the normal [Euclidean algorithm](euclid-algorithm.md). So the algorithm will at least compute the correct GCD.
 
-To see why the algorithm also computes the correct coefficients, you can check that the following invariants will hold at any time (before the while loop, and at the end of each iteration): $x \cdot a + y \cdot b = a_1$ and $x_1 \cdot a + y_1 \cdot b = b_1$.
-It's trivial to see, that these two equations are satisfied at the beginning.
-And you can check that the update in the loop iteration will still keep those equalities valid.
+To see why the algorithm computes the correct coefficients, consider that the following invariants hold at any given time (before the while loop begins and at the end of each iteration):
+
+$$x \cdot a + y \cdot b = a_1$$
+
+$$x_1 \cdot a + y_1 \cdot b = b_1$$
+
+Let the values at the end of an iteration be denoted by a prime ($'$), and assume $q = \frac{a_1}{b_1}$. From the [Euclidean algorithm](euclid-algorithm.md), we have:
+
+$$a_1' = b_1$$
+
+$$b_1' = a_1 - q \cdot b_1$$
+
+For the first invariant to hold, the following should be true:
+
+$$x' \cdot a + y' \cdot b = a_1' = b_1$$
+
+$$x' \cdot a + y' \cdot b = x_1 \cdot a + y_1 \cdot b$$
+
+Similarly for the second invariant, the following should hold:
+
+$$x_1' \cdot a + y_1' \cdot b = a_1 - q \cdot b_1$$
+
+$$x_1' \cdot a + y_1' \cdot b = (x - q \cdot x_1) \cdot a + (y - q \cdot y_1) \cdot b$$
+
+By comparing the coefficients of $a$ and $b$, the update equations for each variable can be derived, ensuring that the invariants are maintained throughout the algorithm.
+
 
 At the end we know that $a_1$ contains the GCD, so $x \cdot a + y \cdot b = g$.
 Which means that we have found the required coefficients.
 
 You can even optimize the code more, and remove the variable $a_1$ and $b_1$ from the code, and just reuse $a$ and $b$.
-However if you do so, you loose the ability to argue about the invariants.
+However if you do so, you lose the ability to argue about the invariants.
 
 ## Practice Problems
 
-* [10104 - Euclid Problem](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1045)
+* [UVA - 10104 - Euclid Problem](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1045)
 * [GYM - (J) Once Upon A Time](http://codeforces.com/gym/100963)
 * [UVA - 12775 - Gift Dilemma](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=4628)

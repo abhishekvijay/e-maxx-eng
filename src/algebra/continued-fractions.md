@@ -679,12 +679,12 @@ One can further prove (and it was first done by Lagrange) that for arbitrary qua
         # compute the continued fraction of sqrt(n)
         def sqrt(n):
             n0 = math.floor(math.sqrt(n))
-            x, y, z = 0, 1, 1
+            x, y, z = 1, 0, 1
             a = []
             def step(x, y, z):
                 a.append((x * n0 + y) // z)
                 t = y - a[-1]*z
-                x, y, z = z*t, -z*y, t**2 - n*x**2
+                x, y, z = -z*x, z*t, t**2 - n*x**2
                 g = math.gcd(x, math.gcd(y, z))
                 return x // g, y // g, z // g
 
@@ -1111,3 +1111,4 @@ Now that the most important facts and concepts were introduced, it is time to de
 * [POJ Founder Monthly Contest 2008.03.16 - A Modular Arithmetic Challenge](http://poj.org/problem?id=3530)
 * [2019 Multi-University Training Contest 5 - fraction](http://acm.hdu.edu.cn/showproblem.php?pid=6624)
 * [SnackDown 2019 Elimination Round - Election Bait](https://www.codechef.com/SNCKEL19/problems/EBAIT)
+* [Code Jam 2019 round 2 - Continued Fraction](https://github.com/google/coding-competitions-archive/blob/main/codejam/2019/round_2/new_elements_part_2/statement.pdf)

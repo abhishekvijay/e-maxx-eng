@@ -18,7 +18,7 @@ It is required to find the last number.
 This task was set by **Flavius Josephus** in the 1st century (though in a somewhat narrower formulation: for $k = 2$).
 
 This problem can be solved by modeling the procedure.
-Brute force modeling will work $O(n^{2})$. Using a [Segment Tree](/data_structures/segment_tree.html), we can improve it to $O(n \log n)$.
+Brute force modeling will work $O(n^{2})$. Using a [Segment Tree](../data_structures/segment_tree.md), we can improve it to $O(n \log n)$.
 We want something better though.
 
 ## Modeling a $O(n)$ solution
@@ -77,7 +77,7 @@ int josephus(int n, int k) {
 This formula can also be found analytically.
 Again here we assume 0-indexing.
 After we delete the first number, we have $n-1$ numbers left.
-When we repeat the procedure, we will start with the number that had originally the index $k \bmod m$.
+When we repeat the procedure, we will start with the number that had originally the index $k \bmod n$.
 $J_{n-1, k}$ would be the answer for the remaining circle, if we start counting at $0$, but because we actually start with $k$ we have $J_{n, k} = (J_{n-1,k} + k) \ \bmod n$.
 
 ## Modeling a $O(k \log n)$ solution

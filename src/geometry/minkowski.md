@@ -19,7 +19,7 @@ Here we consider the polygons to be cyclically enumerated, i. e. $P_{|P|} = P_0,
 Since the size of the sum is linear in terms of the sizes of initial polygons, we should aim at finding a linear-time algorithm.
 Suppose that both polygons are ordered counter-clockwise. Consider sequences of edges $\{\overrightarrow{P_iP_{i+1}}\}$
 and $\{\overrightarrow{Q_jQ_{j+1}}\}$ ordered by polar angle. We claim that the sequence of edges of $P + Q$ can be obtained by merging
-these two sequences preserving polar angle order and replacing consequitive co-directed vectors with their sum. Straightforward usage of this idea results
+these two sequences preserving polar angle order and replacing consecutive co-directed vectors with their sum. Straightforward usage of this idea results
 in a linear-time algorithm, however, restoring the vertices of $P + Q$ from the sequence of sides requires repeated addition of vectors,
 which may introduce unwanted precision issues if we're working with floating-point coordinates, so we will describe a slight
 modification of this idea.
@@ -41,7 +41,9 @@ We repeat the following steps while $i < |P|$ or $j < |Q|$.
 
 Here is a nice visualization, which may help you understand what is going on.
 
-<center>![Visual](minkowski.gif)</center>
+<div style="text-align: center;">
+  <img src="minkowski.gif" alt="Visual">
+</div>
 
 ## Distance between two polygons
 One of the most common applications of Minkowski sum is computing the distance between two convex polygons (or simply checking whether they intersect).
@@ -97,9 +99,9 @@ vector<pt> minkowski(vector<pt> P, vector<pt> Q){
     while(i < P.size() - 2 || j < Q.size() - 2){
         result.push_back(P[i] + Q[j]);
         auto cross = (P[i + 1] - P[i]).cross(Q[j + 1] - Q[j]);
-        if(cross >= 0)
+        if(cross >= 0 && i < P.size() - 2)
             ++i;
-        if(cross <= 0)
+        if(cross <= 0 && j < Q.size() - 2)
             ++j;
     }
     return result;

@@ -96,7 +96,7 @@ Compute $x^n \bmod m$.
 This is a very common operation. For instance it is used in computing the [modular multiplicative inverse](module-inverse.md).
 
 **Solution:**
-Since we know that the module operator doesn't interfere with multiplications ($a \cdot b \equiv (a \bmod m) \cdot (b \bmod m) \pmod m$), we can directly use the same code, and just replace every multiplication with a modular multiplication:
+Since we know that the modulo operator doesn't interfere with multiplications ($a \cdot b \equiv (a \bmod m) \cdot (b \bmod m) \pmod m$), we can directly use the same code, and just replace every multiplication with a modular multiplication:
 
 ```cpp
 long long binpow(long long a, long long b, long long m) {
@@ -112,8 +112,10 @@ long long binpow(long long a, long long b, long long m) {
 }
 ```
 
-**Note:** If $m$ is a prime number we can speed up a bit this algorithm by calculating $x^{n \bmod (m-1)}$ instead of $x ^ n$.
-This follows directly from [Fermat's little theorem](module-inverse.md#toc-tgt-2).
+**Note:**
+It's possible to speed this algorithm for large $b >> m$.
+If $m$ is a prime number $x^n \equiv x^{n \bmod (m-1)} \pmod{m}$ for prime $m$, and $x^n \equiv x^{n \bmod{\phi(m)}} \pmod{m}$ for composite $m$.
+This follows directly from Fermat's little theorem and Euler's theorem, see the article about [Modular Inverses](module-inverse.md#fermat-euler) for more details.
 
 ### Effective computation of Fibonacci numbers
 
@@ -137,18 +139,18 @@ Therefore, we can raise this transformation matrix to the $n$-th power to find $
 vector<int> applyPermutation(vector<int> sequence, vector<int> permutation) {
     vector<int> newSequence(sequence.size());
     for(int i = 0; i < sequence.size(); i++) {
-        newSequence[permutation[i]] = sequence[i];
+        newSequence[i] = sequence[permutation[i]];
     }
     return newSequence;
 }
 
-vector<int> permute(vector<int> sequence, vector<int> permutation, long long b) {
-    while (b > 0) {
-        if (b & 1) {
+vector<int> permute(vector<int> sequence, vector<int> permutation, long long k) {
+    while (k > 0) {
+        if (k & 1) {
             sequence = applyPermutation(sequence, permutation);
         }
         permutation = applyPermutation(permutation, permutation);
-        b >>= 1;
+        k >>= 1;
     }
     return sequence;
 }
@@ -186,7 +188,7 @@ a_{41} & a_ {42} & a_ {43} & a_ {44}
 \end{pmatrix}
  = \begin{pmatrix} x' & y' & z' & 1 \end{pmatrix}$$
 
-(Why introduce a fictitious fourth coordinate, you ask? Without this, it would not be possible to implement the shift operation, as it requires us to add a constant to the coordinates. Without the fictitious coordinates, we would only be able to apply a linear combination to the coordinates, not being able to add a constant.)
+(Why introduce a fictitious fourth coordinate, you ask? That is the beauty of [homogeneous coordinates](https://en.wikipedia.org/wiki/Homogeneous_coordinates), which find great application in computer graphics. Without this, it would not be possible to implement affine operations like the shift operation as a single matrix multiplication, as it requires us to _add_ a constant to the coordinates. The affine transformation becomes a linear transformation in the higher dimension!)
 
 Here are some examples of how transformations are represented in matrix form:
 
@@ -251,9 +253,15 @@ $$a \cdot b = \begin{cases}
 * [UVa 374 - Big Mod](http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=310)
 * [UVa 11029 - Leading and Trailing](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=1970)
 * [Codeforces - Parking Lot](http://codeforces.com/problemset/problem/630/I)
+* [leetcode - Count good numbers](https://leetcode.com/problems/count-good-numbers/)
+* [Codechef - Chef and Riffles](https://www.codechef.com/JAN221B/problems/RIFFLES)
+* [Codeforces - Decoding Genome](https://codeforces.com/contest/222/problem/E)
+* [Codeforces - Neural Network Country](https://codeforces.com/contest/852/problem/B)
+* [Codeforces - Magic Gems](https://codeforces.com/problemset/problem/1117/D)
 * [SPOJ - The last digit](http://www.spoj.com/problems/LASTDIG/)
 * [SPOJ - Locker](http://www.spoj.com/problems/LOCKER/)
-* [LA - 3722 Jewel-eating Monsters](https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1723)
+* [LA - 3722 Jewel-eating Monsters](https://vjudge.net/problem/UVALive-3722)
 * [SPOJ - Just add it](http://www.spoj.com/problems/ZSUM/)
-* [Codechef - Chef and Riffles](https://www.codechef.com/JAN221B/problems/RIFFLES)
-* [leetcode - Count good numbers](https://leetcode.com/problems/count-good-numbers/)
+* [Codeforces - Stairs and Lines](https://codeforces.com/contest/498/problem/E)
+
+

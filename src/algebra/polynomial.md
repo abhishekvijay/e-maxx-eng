@@ -5,21 +5,125 @@ tags:
 
 # Operations on polynomials and series
 
-In this article we will cover common operations that you will probably have to do if you deal with polynomials.
+Problems in competitive programming, especially the ones involving enumeration some kind, are often solved by reducing the problem to computing something on polynomials and formal power series.
 
-## Basic Notion and Facts
+This includes concepts such as polynomial multiplication, interpolation, and more complicated ones, such as polynomial logarithms and exponents. In this article, a brief overview of such operations and common approaches to them is presented.
 
-Let $A(x) = a_0 + a_1 x + \dots + a_n x^n$ be a polynomial over some field $\mathbb F$. It For simplicity we will write $A$ instead of $A(x)$ wherever possible, which will be understandable from the context. It is assumed that either $a_n \neq 0$ or $A(x)=0$.
+## Basic Notion and facts
 
-The degree of polynomial $A$ with $a_n \neq 0$ is defined as $\deg A = n$. For consistency, degree of $A(x) = 0$ is defined as $\deg A = -\infty$. In this notion, $\deg AB = \deg A + \deg B$ for arbitrary polynomials $A$ and $B$.
+In this section, we focus more on the definitions and "intuitive" properties of various polynomial operations. The technical details of their implementation and complexities will be covered in later sections.
 
-Polynomials form an Euclidean ring which means that for any polynomials $A$ and $B \neq 0$ we can uniquely represent $A$ as
+### Polynomial multiplication
 
-$$
-A = D \cdot B + R,~ \deg R < \deg B.
-$$
+!!! info "Definition"
+	**Univariate polynomial** is an expression of form $A(x) = a_0 + a_1 x + \dots + a_n x^n$.
 
-Here $R$ is the remainder of $A$ modulo $B$ and $D$ is called the quotient. If $A$ and $B$ have the same remainder modulo $C$, they're said to be equivalent modulo $C$, which is denoted as $A \equiv B \pmod{C}$. Several important properties of polynomial Euclidean division:
+The values $a_0, \dots, a_n$ are polynomial coefficients, typically taken from some set of numbers or number-like structures. In this article, we assume that the coefficients are taken from some [field](https://en.wikipedia.org/wiki/Field_(mathematics)), meaning that operations of addition, subtraction, multiplication and division are well-defined for them (except for division by $0$) and they generally behave in a similar way to real numbers.
+	
+Typical example of such field is the field of remainders modulo prime number $p$.
+
+For simplicity we will drop the term _univariate_, as this is the only kind of polynomials we consider in this article. We will also write $A$ instead of $A(x)$ wherever possible, which will be understandable from the context. It is assumed that either $a_n \neq 0$ or $A(x)=0$.
+
+!!! info "Definition"
+	The **product** of two polynomials is defined by expanding it as an arithmetic expression:
+
+	$$
+	A(x) B(x) = \left(\sum\limits_{i=0}^n a_i x^i \right)\left(\sum\limits_{j=0}^m b_j x^j\right) = \sum\limits_{i,j} a_i b_j x^{i+j} = \sum\limits_{k=0}^{n+m} c_k x^k = C(x).
+	$$
+
+	The sequence $c_0, c_1, \dots, c_{n+m}$ of the coefficients of $C(x)$ is called the **convolution** of $a_0, \dots, a_n$ and $b_0, \dots, b_m$.
+
+!!! info "Definition"
+	The **degree** of a polynomial $A$ with $a_n \neq 0$ is defined as $\deg A = n$.
+	
+	For consistency, degree of $A(x) = 0$ is defined as $\deg A = -\infty$.
+
+In this notion, $\deg AB = \deg A + \deg B$ for any polynomials $A$ and $B$.
+
+Convolutions are the basis of solving many enumerative problems.
+
+!!! Example
+	You have $n$ objects of the first kind and $m$ objects of the second kind.
+
+	Objects of first kind are valued $a_1, \dots, a_n$, and objects of the second kind are valued $b_1, \dots, b_m$.
+
+	You pick a single object of the first kind and a single object of the second kind. How many ways are there to get the total value $k$?
+
+??? hint "Solution"
+	Consider the product $(x^{a_1} + \dots + x^{a_n})(x^{b_1} + \dots + x^{b_m})$. If you expand it, each monomial will correspond to the pair $(a_i, b_j)$ and contribute to the coefficient near $x^{a_i+b_j}$. In other words, the answer is the coefficient near $x^k$ in the product.
+
+!!! Example
+	You throw a $6$-sided die $n$ times and sum up the results from all throws. What is the probability of getting sum of $k$?
+
+??? hint "Solution"
+	The answer is the number of outcomes having the sum $k$, divided by the total number of outcomes, which is $6^n$.
+
+	What is the number of outcomes having the sum $k$? For $n=1$, it may be represented by a polynomial $A(x) = x^1+x^2+\dots+x^6$.
+
+	For $n=2$, using the same approach as in the example above, we conclude that it is represented by the polynomial $(x^1+x^2+\dots+x^6)^2$.
+
+	That being said, the answer to the problem is the $k$-th coefficient of $(x^1+x^2+\dots+x^6)^n$, divided by $6^n$.
+
+The coefficient near $x^k$ in the polynomial $A(x)$ is denoted shortly as $[x^k]A$.
+
+### Formal power series
+
+!!! info "Definition"
+	A **formal power series** is an infinite sum $A(x) = a_0 + a_1 x + a_2 x^2 + \dots$, considered regardless of its convergence properties.
+
+In other words, when we consider e.g. a sum $1+\frac{1}{2}+\frac{1}{4}+\frac{1}{8}+\dots=2$, we imply that it _converges_ to $2$ when the number of summands approach infinity. However, formal series are only considered in terms of sequences that make them.
+
+!!! info "Definition"
+	The **product** of formal power series $A(x)$ and $B(x)$, is also defined by expanding it as an arithmetic expression:
+
+
+	$$
+	A(x) B(x) = \left(\sum\limits_{i=0}^\infty a_i x^i \right)\left(\sum\limits_{j=0}^\infty b_j x^j\right) = \sum\limits_{i,j} a_i b_j x^{i+j} = \sum\limits_{k=0}^{\infty} c_k x^k = C(x),
+	$$
+
+	where the coefficients $c_0, c_1, \dots$ are define as finite sums
+
+	$$
+	c_k = \sum\limits_{i=0}^k a_i b_{k-i}.
+	$$
+
+	The sequence $c_0, c_1, \dots$ is also called a **convolution** of $a_0, a_1, \dots$ and $b_0, b_1, \dots$, generalizing the concept to infinite sequences.
+
+Thus, polynomials may be considered formal power series, but with finite number of coefficients.
+
+Formal power series play a crucial role in enumerative combinatorics, where they're studied as [generating functions](https://en.wikipedia.org/wiki/Generating_function) for various sequences. Detailed explanation of generating functions and the intuition behind them will, unfortunately, be out of scope for this article, therefore the curious reader is referenced e.g. [here](https://codeforces.com/blog/entry/103979) for details about their combinatorial meaning.
+
+However, we will very briefly mention that if $A(x)$ and $B(x)$ are generating functions for sequences that enumerate some objects by number of "atoms" in them (e.g. trees by the number of vertices), then the product $A(x) B(x)$ enumerates objects that can be described as pairs of objects of kinds $A$ and $B$, enumerates by the total number of "atoms" in the pair.
+
+!!! Example
+	Let $A(x) = \sum\limits_{i=0}^\infty 2^i x^i$ enumerate packs of stones, each stone colored in one of $2$ colors (so, there are $2^i$ such packs of size $i$) and $B(x) = \sum\limits_{j=0}^{\infty} 3^j x^j$ enumerate packs of stones, each stone colored in one of $3$ colors. Then $C(x) = A(x) B(x) = \sum\limits_{k=0}^\infty c_k x^k$ would enumerate objects that may be described as "two packs of stones, first pack only of stones of type $A$, second pack only of stones of type $B$, with total number of stones being $k$" for $c_k$.
+
+In a similar way, there is an intuitive meaning to some other functions over formal power series.
+
+### Long polynomial division
+
+Similar to integers, it is possible to define long division on polynomials.
+
+!!! info "Definition"
+
+	For any polynomials $A$ and $B \neq 0$, one may represent $A$ as
+
+	$$
+	A = D \cdot B + R,~ \deg R < \deg B,
+	$$
+
+	where $R$ is called the **remainder** of $A$ modulo $B$ and $D$ is called the **quotient**.
+
+Denoting $\deg A = n$ and $\deg B = m$, naive way to do it is to use long division, during which you multiply $B$ by the monomial $\frac{a_n}{b_m} x^{n - m}$ and subtract it from $A$, until the degree of $A$ is smaller than that of $B$. What remains of $A$ in the end will be the remainder (hence the name), and the polynomials with which you multiplied $B$ in the process, summed together, form the quotient.
+
+!!! info "Definition"
+	If $A$ and $B$ have the same remainder modulo $C$, they're said to be **equivalent** modulo $C$, which is denoted as
+	
+	$$
+	A \equiv B \pmod{C}.
+	$$
+	
+Polynomial long division is useful because of its many important properties:
 
 - $A$ is a multiple of $B$ if and only if $A \equiv 0 \pmod B$.
 
@@ -33,8 +137,10 @@ Here $R$ is the remainder of $A$ modulo $B$ and $D$ is called the quotient. If $
 
 - For modulo being $x^k$, it holds that $A \equiv a_0 + a_1 x + \dots + a_{k-1} x^{k-1} \pmod{x^k}$.
 
+Note that long division can't be properly defined for formal power series. Instead, for any $A(x)$ such that $a_0 \neq 0$, it is possible to define an inverse formal power series $A^{-1}(x)$, such that $A(x) A^{-1}(x) = 1$. This fact, in turn, can be used to compute the result of long division for polynomials.
+
 ## Basic implementation
-[Here](https://github.com/e-maxx-eng/e-maxx-eng-aux/blob/master/src/polynomial.cpp) you can find the basic implementation of polynomial algebra.
+[Here](https://cp-algorithms.github.io/cp-algorithms-aux/cp-algo/math/poly.hpp) you can find the basic implementation of polynomial algebra.
 
 It supports all trivial operations and some other useful methods. The main class is `poly<T>` for polynomials with coefficients of type `T`.
 
@@ -157,7 +263,7 @@ Note that the matrix above is a so-called triangular [Toeplitz matrix](https://e
 
 Let's generalize the Sieveking–Kung algorithm. Consider equation $F(P) = 0$ where $P(x)$ should be a polynomial and $F(x)$ is some polynomial-valued function defined as
 
-$$F(x) = \sum\limits_{i=0}^\infty \alpha_i (x-\beta)^k,$$
+$$F(x) = \sum\limits_{i=0}^\infty \alpha_i (x-\beta)^i,$$
 
 where $\beta$ is some constant. It can be proven that if we introduce a new formal variable $y$, we can express $F(x)$ as
 
@@ -165,7 +271,7 @@ $$F(x) = F(y) + (x-y)F'(y) + (x-y)^2 G(x,y),$$
 
 where $F'(x)$ is the derivative formal power series defined as
 
-$$F'(x) = \sum\limits_{i=0}^\infty (k+1)\alpha_{i+1}(x-\beta)^k,$$
+$$F'(x) = \sum\limits_{i=0}^\infty (i+1)\alpha_{i+1}(x-\beta)^i,$$
 
 and $G(x, y)$ is some formal power series of $x$ and $y$. With this result we can find the solution iteratively.
 
@@ -270,15 +376,15 @@ It gives us an $O(n \log n)$ algorithm when you need to compute values in powers
 
 Another observation is that $kr = \binom{k+r}{2} - \binom{k}{2} - \binom{r}{2}$. Then we have
 
-$$\boxed{A(z^r) = z^{-\binom{r}{2}}\sum\limits_{k=0}^n \left(a_k z^{-\binom{k}{2}}\right)z^\binom{k+r}{2}}$$
+$$\boxed{A(z^r) = z^{-\binom{r}{2}}\sum\limits_{k=0}^n \left(a_k z^{-\binom{k}{2}}\right)z^{\binom{k+r}{2}}}$$
 
-The coefficient of $x^{n+r}$ of the product of the polynomials $A_0(x) = \sum\limits_{k=0}^n a_{n-k}z^{-\binom{n-k}{2}}x^k$ and $A_1(x) = \sum\limits_{k\geq 0}z^{\binom{k}{2}}x^k$ equals $z^{\binom{r}{2}}A(z^r)$. You can use the formula $z^\binom{k+1}{2}=z^{\binom{k}{2}+k}$ to calculate the coefficients of $A_0(x)$ and $A_1(x)$.
+The coefficient of $x^{n+r}$ of the product of the polynomials $A_0(x) = \sum\limits_{k=0}^n a_{n-k}z^{-\binom{n-k}{2}}x^k$ and $A_1(x) = \sum\limits_{k\geq 0}z^{\binom{k}{2}}x^k$ equals $z^{\binom{r}{2}}A(z^r)$. You can use the formula $z^{\binom{k+1}{2}}=z^{\binom{k}{2}+k}$ to calculate the coefficients of $A_0(x)$ and $A_1(x)$.
 
 ### Multi-point Evaluation
 Assume you need to calculate $A(x_1), \dots, A(x_n)$. As mentioned earlier, $A(x) \equiv A(x_i) \pmod{x-x_i}$. Thus you may do the following:
 
 1. Compute a segment tree such that in the segment $[l,r)$ stands the product $P_{l, r}(x) = (x-x_l)(x-x_{l+1})\dots(x-x_{r-1})$.
-2. Starting with $l=1$ and $r=n$ at the root node. Let $m=\lfloor(l+r)/2\rfloor$. Let's move down to $[l,m)$ with the polynomial $A(x) \pmod{P_{l,m}(x)}$.
+2. Starting with $l=1$ and $r=n+1$ at the root node. Let $m=\lfloor(l+r)/2\rfloor$. Let's move down to $[l,m)$ with the polynomial $A(x) \pmod{P_{l,m}(x)}$.
 3. This will recursively compute $A(x_l), \dots, A(x_{m-1})$, now do the same for $[m,r)$ with $A(x) \pmod{P_{m,r}(x)}$.
 4. Concatenate the results from the first and second recursive call and return them.
 

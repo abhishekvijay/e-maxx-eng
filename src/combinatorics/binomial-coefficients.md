@@ -85,7 +85,9 @@ int C(int n, int k) {
 
 ### Improved implementation
 
-Note that in the above implementation numerator and denominator have the same number of factors ($k$), each of which is greater than or equal to 1. Therefore, we can replace our fraction with a product $k$ fractions, each of which is real-valued. However, on each step after multiplying current answer by each of the next fractions the answer will still be integer (this follows from the property of factoring in). C++ implementation:
+Note that in the above implementation numerator and denominator have the same number of factors ($k$), each of which is greater than or equal to 1. Therefore, we can replace our fraction with a product $k$ fractions, each of which is real-valued. However, on each step after multiplying current answer by each of the next fractions the answer will still be integer (this follows from the property of factoring in). 
+
+C++ implementation:
 
 ```cpp
 int C(int n, int k) {
@@ -101,6 +103,7 @@ Here we carefully cast the floating point number to an integer, taking into acco
 ### Pascal's Triangle
 
 By using the recurrence relation we can construct a table of binomial coefficients (Pascal's triangle) and take the result from it. The advantage of this method is that intermediate results never exceed the answer and calculating each new table element requires only one addition. The flaw is slow execution for large $n$ and $k$ if you just need a single value and not the whole table (because in order to calculate $\binom n k$ you will need to build a table of all $\binom i j, 1 \le i \le n, 1 \le j \le n$, or at least to $1 \le j \le \min (i, 2k)$). The time complexity can be considered to be $\mathcal{O}(n^2)$.
+
 C++ implementation:
 
 ```cpp
@@ -217,7 +220,6 @@ When $m$ is not square-free, a [generalization of Lucas's theorem for prime powe
 * [LightOj - Necklaces](http://www.lightoj.com/volume_showproblem.php?problem=1419)
 * [HACKEREARTH: Binomial Coefficient](https://www.hackerearth.com/problem/algorithm/binomial-coefficient-1/description/)
 * [SPOJ - Ada and Teams](http://www.spoj.com/problems/ADATEAMS/)
-* [DevSkill - Drive In Grid](https://devskill.com/CodingProblems/ViewProblem/61)
 * [SPOJ - Greedy Walking](http://www.spoj.com/problems/UCV2013E/)
 * [UVa 13214 - The Robot's Grid](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=5137)
 * [SPOJ - Good Predictions](http://www.spoj.com/problems/GOODB/)
@@ -225,11 +227,11 @@ When $m$ is not square-free, a [generalization of Lucas's theorem for prime powe
 * [SPOJ - Topper Rama Rao](http://www.spoj.com/problems/HLP_RAMS/)
 * [UVa 13184 - Counting Edges and Graphs](https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=5095)
 * [Codeforces - Anton and School 2](http://codeforces.com/contest/785/problem/D)
-* [DevSkill - Parandthesis](https://devskill.com/CodingProblems/ViewProblem/255)
 * [Codeforces - Bacterial Melee](http://codeforces.com/contest/760/problem/F)
 * [Codeforces - Points, Lines and Ready-made Titles](http://codeforces.com/contest/872/problem/E)
 * [SPOJ - The Ultimate Riddle](https://www.spoj.com/problems/DCEPC13D/)
 * [CodeChef - Long Sandwich](https://www.codechef.com/MAY17/problems/SANDWICH/)
+* [Codeforces - Placing Jinas](https://codeforces.com/problemset/problem/1696/E)
 
 ## References
 * [Blog fishi.devtail.io](https://fishi.devtail.io/weblog/2015/06/25/computing-large-binomial-coefficients-modulo-prime-non-prime/)

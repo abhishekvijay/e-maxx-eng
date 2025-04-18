@@ -43,7 +43,9 @@ The source $s$ is origin of all the water, and the water can only drain in the s
 
 The following image shows a flow network.
 The first value of each edge represents the flow, which is initially 0, and the second value represents the capacity.
-<center>![Flow network](Flow1.png)</center>
+<div style="text-align: center;">
+  <img src="Flow1.png" alt="Flow network">
+</div>
 
 The value of the flow of a network is the sum of all the flows that get produced in the source $s$, or equivalently to the sum of all the flows that are consumed by the sink $t$.
 A **maximal flow** is a flow with the maximal possible value.
@@ -53,12 +55,14 @@ In the visualization with water pipes, the problem can be formulated in the foll
 how much water can we push through the pipes from the source to the sink?
 
 The following image shows the maximal flow in the flow network.
-<center>![Maximal flow](Flow9.png)</center>
+<div style="text-align: center;">
+  <img src="Flow9.png" alt="Maximal flow">
+</div>
 
 ## Ford-Fulkerson method
 
 Let's define one more thing.
-A **residual capacity** of an directed edge is the capacity minus the flow.
+A **residual capacity** of a directed edge is the capacity minus the flow.
 It should be noted that if there is a flow along some directed edge $(u, v)$, then the reversed edge has capacity 0 and we can define the flow of it as $f((v, u)) = -f((u, v))$.
 This also defines the residual capacity for all the reversed edges.
 We can create a **residual network** from all these edges, which is just a network with the same vertices and edges, but we use the residual capacities as capacities.
@@ -66,7 +70,7 @@ We can create a **residual network** from all these edges, which is just a netwo
 The Ford-Fulkerson method works as follows.
 First, we set the flow of each edge to zero.
 Then we look for an **augmenting path** from $s$ to $t$.
-An augmenting path is a simple path in the residual graph, i.e. along the edges whose residual capacity is positive.
+An augmenting path is a simple path in the residual graph where residual capacity is positive for all the edges along that path.
 If such a path is found, then we can increase the flow along these edges.
 We keep on searching for augmenting paths and increasing the flow.
 Once an augmenting path doesn't exist anymore, the flow is maximal.
@@ -79,7 +83,9 @@ we update $f((u, v)) ~\text{+=}~ C$ and $f((v, u)) ~\text{-=}~ C$ for every edge
 Here is an example to demonstrate the method.
 We use the same flow network as above.
 Initially we start with a flow of 0.
-<center>![Flow network](Flow1.png)</center>
+<div style="text-align: center;">
+  <img src="Flow1.png" alt="Flow network">
+</div>
 
 We can find the path $s - A - B - t$ with the residual capacities 7, 5, and 8.
 Their minimum is 5, therefore we can increase the flow along this path by 5.
@@ -184,7 +190,7 @@ int maxflow(int s, int t) {
 
 ## Integral flow theorem ## { #integral-theorem}
 
-The theorem simply says, that if every capacity in the network is an integer, then the flow in each edge will be an integer in the maximal flow.
+The theorem says, that if every capacity in the network is an integer, then the size of the maximum flow is an integer, and there is a maximum flow such that the flow in each edge is an integer as well. In particular, Ford-Fulkerson method finds such a flow.
 
 ## Max-flow min-cut theorem
 
@@ -200,7 +206,9 @@ It says that the capacity of the maximum flow has to be equal to the capacity of
 In the following image, you can see the minimum cut of the flow network we used earlier.
 It shows that the capacity of the cut $\{s, A, D\}$ and $\{B, C, t\}$ is $5 + 3 + 2 = 10$, which is equal to the maximum flow that we found.
 Other cuts will have a bigger capacity, like the capacity between $\{s, A\}$ and $\{B, C, D, t\}$ is $4 + 3 + 5 = 12$.
-<center>![Minimum cut](Cut.png)</center>
+<div style="text-align: center;">
+  <img src="Cut.png" alt="Minimum cut">
+</div>
 
 A minimum cut can be found after performing a maximum flow computation using the Ford-Fulkerson method.
 One possible minimum cut is the following:
@@ -213,3 +221,4 @@ This partition can be easily found using [DFS](depth-first-search.md) starting a
 - [CSES - Download Speed](https://cses.fi/problemset/task/1694)
 - [CSES - Police Chase](https://cses.fi/problemset/task/1695)
 - [CSES - School Dance](https://cses.fi/problemset/task/1696)
+- [CSES - Distinct Routes](https://cses.fi/problemset/task/1711)

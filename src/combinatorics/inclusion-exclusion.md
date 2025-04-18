@@ -137,27 +137,29 @@ As we solved the inverse problem, we subtract it from the total of $3^n$ sequenc
 
 $$3^n - (3 \cdot 2^n - 3 \cdot 1 + 0)$$
 
-### The number of integer solutions to the equation
+<div id="the-number-of-integer-solutions-to-the-equation"></div>
+### Number of upper-bound integer sums {: #number-of-upper-bound-integer-sums }
 
 Consider the following equation:
 
 $$x_1 + x_2 + x_3 + x_4 + x_5 + x_6 = 20$$
 
-where $0 \le x_i \le 8 (i = 1,2,\ldots 6)$.
+where $0 \le x_i \le 8 ~ (i = 1,2,\ldots 6)$.
 
 Task: count the number of solutions to the equation.
 
-Forget the restriction on $x_i$ for a moment and just count the number of nonnegative solutions to this equation. This is easily done using [binomial coefficients](binomial-coefficients.md): we want to break a sequence of $20$ units into $6$ groups, which is the same as distributing $5$ "walls" over $25$ slots:
+Forget the restriction on $x_i$ for a moment and just count the number of nonnegative solutions to this equation. This is easily done using [Stars and Bars](stars_and_bars.md):
+we want to break a sequence of $20$ units into $6$ groups, which is the same as arranging $5$ _bars_ and $20$ _stars_:
 
 $$N_0 = \binom{25}{5}$$
 
-We will now calculate the number of "bad" solutions with the inclusion-exclusion principle. The "bad" solutions will be those in which one or more $x_i$ are greater than $9$.
+We will now calculate the number of "bad" solutions with the inclusion-exclusion principle. The "bad" solutions will be those in which one or more $x_i$ are greater than or equal to $9$.
 
-Denote by $A_k (k = 1,2\ldots 6)$ the set of solutions where $x_k \ge 9$, and all other $x_i \ge 0 (i \ne k)$ (they may be $\ge 9$ or not). To calculate the size of $A_k$, note that we have essentially the same combinatorial problem that was solved in the two paragraphs above, but now $9$ of the units are excluded from the slots and definitely belong to the first group. Thus:
+Denote by $A_k ~ (k = 1,2\ldots 6)$ the set of solutions where $x_k \ge 9$, and all other $x_i \ge 0 ~ (i \ne k)$ (they may be $\ge 9$ or not). To calculate the size of $A_k$, note that we have essentially the same combinatorial problem that was solved in the two paragraphs above, but now $9$ of the units are excluded from the slots and definitely belong to the first group. Thus:
 
 $$ | A_k | = \binom{16}{5} $$
 
-Similarly, the size of the intersection between sets $A_k$ and $A_p$ is equal to:
+Similarly, the size of the intersection between two sets $A_k$ and $A_p$ (for $k \ne p$) is equal to:
 
 $$ \left| A_k \cap A_p \right| = \binom{7}{5}$$
 
@@ -166,6 +168,14 @@ The size of each intersection of three sets is zero, since $20$ units will not b
 Combining all this into the formula of inclusions-exceptions and given that we solved the inverse problem, we finally get the answer:
 
 $$\binom{25}{5} - \left(\binom{6}{1} \cdot \binom{16}{5} - \binom{6}{2} \cdot \binom{7}{5}\right) $$
+
+This easily generalizes to $d$ numbers that sum up to $s$ with the restriction $0 \le x_i \le b$:
+
+$$\sum_{i=0}^d (-1)^i \binom{d}{i} \binom{s+d-1-(b+1)i}{d-1}$$
+
+As above, we treat binomial coefficients with negative upper index as zero. 
+
+Note this problem could also be solved with dynamic programming or generating functions. The inclusion-exclusion answer is computed in $O(d)$ time (assuming math operations like binomial coefficient are constant time), while a simple DP approach would take $O(ds)$ time. 
 
 ### The number of relative primes in a given interval
 
@@ -439,7 +449,6 @@ A list of tasks that can be solved using the principle of inclusions-exclusions:
 * [TopCoder SRM 390 "SetOfPatterns" [difficulty: medium]](http://www.topcoder.com/stat?c=problem_statement&pm=8307)
 * [TopCoder SRM 176 "Deranged" [difficulty: medium]](http://community.topcoder.com/stat?c=problem_statement&pm=2013)
 * [TopCoder SRM 457 "TheHexagonsDivOne" [difficulty: medium]](http://community.topcoder.com/stat?c=problem_statement&pm=10702&rd=14144&rm=303184&cr=22697599)
-* [Test>>>thebest "HarmonicTriples" (in Russian) [difficulty: medium]](http://esci.ru/ttb/statement-62.htm)
 * [SPOJ #4191 MSKYCODE "Sky Code" [difficulty: medium]](http://www.spoj.com/problems/MSKYCODE/)
 * [SPOJ #4168 SQFREE "Square-free integers" [difficulty: medium]](http://www.spoj.com/problems/SQFREE/)
 * [CodeChef "Count Relations" [difficulty: medium]](http://www.codechef.com/JAN11/problems/COUNTREL/)
@@ -449,3 +458,4 @@ A list of tasks that can be solved using the principle of inclusions-exclusions:
 * [SPOJ - EASY MATH [difficulty: medium]](http://www.spoj.com/problems/EASYMATH/)
 * [SPOJ - MOMOS - FEASTOFPIGS [difficulty: easy]](https://www.spoj.com/problems/MOMOS/)
 * [Atcoder - Grid 2 [difficulty: easy]](https://atcoder.jp/contests/dp/tasks/dp_y/)
+* [Codeforces - Count GCD](https://codeforces.com/contest/1750/problem/D)

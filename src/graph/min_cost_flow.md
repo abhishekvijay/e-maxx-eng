@@ -17,7 +17,7 @@ Sometimes the task is given a little differently:
 you want to find the maximum flow, and among all maximal flows we want to find the one with the least cost.
 This is called the **minimum-cost maximum-flow problem**.
 
-Both these problems can be solved effectively with the algorithm of sucessive shortest paths.
+Both these problems can be solved effectively with the algorithm of successive shortest paths.
 
 ## Algorithm
 
@@ -42,7 +42,7 @@ the residual network contains only unsaturated edges (i.e. edges in which $F_{i 
 
 Now we can talk about the **algorithms** to compute the minimum-cost flow.
 At each iteration of the algorithm we find the shortest path in the residual graph from $s$ to $t$.
-In contrary to Edmonds-Karp we look for the shortest path in terms of the cost of the path, instead of the number of edges.
+In contrast to Edmonds-Karp, we look for the shortest path in terms of the cost of the path instead of the number of edges.
 If there doesn't exists a path anymore, then the algorithm terminates, and the stream $F$ is the desired one.
 If a path was found, we increase the flow along it as much as possible (i.e. we find the minimal residual capacity $R$ of the path, and increase the flow by it, and reduce the back edges by the same amount).
 If at some point the flow reaches the value $K$, then we stop the algorithm (note that in the last iteration of the algorithm it is necessary to increase the flow by only such an amount so that the final flow value doesn't surpass $K$).
@@ -70,14 +70,11 @@ There are no other obstructions with undirected graphs or multigraphs.
 
 ### Complexity
 
-Analog to the analysis of the Edmonds-Karp algorithm we get the following estimation:
-$O(n m) \cdot T(n, m)$, where $T(n, m)$ is the time required to find the shortest path in a graph with $n$ vertices and $m$ edges
+The algorithm here is generally exponential in the size of the input. To be more specific, in the worst case it may push only as much as $1$ unit of flow on each iteration, taking $O(F)$ iterations to find a minimum-cost flow of size $F$, making a total runtime to be $O(F \cdot T)$, where $T$ is the time required to find the shortest path from source to sink.
 
-If this search is done with the [Dijkstra algorithm](dijkstra.md), then the complexity for the minimum-cost algorithm would become $O(n^3 m)$.
-However we deal with edges with negative cost.
-So Dijkstra is not applicable, at least not unmodified.
+If [Bellman-Ford](bellman_ford.md) algorithm is used for this, it makes the running time $O(F mn)$. It is also possible to modify [Dijkstra's algorithm](dijkstra.md), so that it needs $O(nm)$ pre-processing as an initial step and then works in $O(m \log n)$ per iteration, making the overall running time to be $O(mn + F m \log n)$. [Here](http://web.archive.org/web/20211009144446/https://min-25.hatenablog.com/entry/2018/03/19/235802) is a generator of a graph, on which such algorithm would require $O(2^{n/2} n^2 \log n)$ time.
 
-Instead we can use the [Bellman-Ford algorithm](bellman_ford.md). With it the complexity becomes $O(n^2 m^2)$.
+The modified Dijkstra's algorithm uses so-called potentials from [Johnson's algorithm](https://en.wikipedia.org/wiki/Johnson%27s_algorithm). It is possible to combine the ideas of this algorithm and Dinic's algorithm to reduce the number of iterations from $F$ to $\min(F, nC)$, where $C$ is the maximum cost found among edges. You may read further about potentials and their combination with Dinic algorithm [here](https://codeforces.com/blog/entry/105658).
 
 ## Implementation
 
@@ -163,3 +160,9 @@ int min_cost_flow(int N, vector<Edge> edges, int K, int s, int t) {
         return cost;
 }
 ```
+
+## Practice Problems
+
+* [CSES - Task Assignment](https://cses.fi/problemset/task/2129)
+* [CSES - Grid Puzzle II](https://cses.fi/problemset/task/2131)
+* [AtCoder - Dream Team](https://atcoder.jp/contests/abc247/tasks/abc247_g)

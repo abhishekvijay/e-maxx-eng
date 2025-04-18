@@ -77,7 +77,7 @@
         </div>
       </div>
     {% endif %}
-    {% if "search" in config["plugins"] %}
+    {% if "material/search" in config["plugins"] %}
       <label class="md-header__button md-icon" for="__search">
         {% include ".icons/material/magnify.svg" %}
       </label>
@@ -87,6 +87,13 @@
       <div class="md-header__source">
         {% include "partials/source.html" %}
       </div>
+    
+      <div class="rss icon">
+      <a href="https://cp-algorithms.com/feed_rss_created.xml" title="RSS" class="md-content__button md-icon">
+          {% include ".icons/fontawesome/solid/rss.svg" %}
+      </a>
+      </div>
+
     {% endif %}
   </nav>
   {% if "navigation.tabs.sticky" in features %}

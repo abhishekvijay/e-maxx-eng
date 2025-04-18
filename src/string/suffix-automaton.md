@@ -193,7 +193,7 @@ Before proceeding to the algorithm itself, we recap the accumulated knowledge, a
 - For each state $v$ one or multiple substrings match.
   We denote by $longest(v)$ the longest such string, and through $len(v)$ its length.
   We denote by $shortest(v)$ the shortest such substring, and its length with $minlen(v)$.
-  Then all the strings corresponding to this state are different suffixes of the string $longest(v)$ and have all possible lengths in the interval $[minlength(v); len(v)]$.
+  Then all the strings corresponding to this state are different suffixes of the string $longest(v)$ and have all possible lengths in the interval $[minlen(v); len(v)]$.
 - For each state $v \ne t_0$ a suffix link is defined as a link, that leads to a state that corresponds to the suffix of the string $longest(v)$ of length $minlen(v) - 1$.
   The suffix links form a tree with the root in $t_0$, and at the same time this tree forms an inclusion relationship between the sets $endpos$.
 - We can express $minlen(v)$ for $v \ne t_0$ using the suffix link $link(v)$ as:
@@ -221,11 +221,11 @@ Let us describe this process:
     (Initially we set $last = 0$, and we will change $last$ in the last step of the algorithm accordingly.)
   - Create a new state $cur$, and assign it with $len(cur) = len(last) + 1$.
     The value $link(cur)$ is not known at the time.
-  - Now we to the following procedure:
+  - Now we do the following procedure:
     We start at the state $last$.
     While there isn't a transition through the letter $c$, we will add a transition to the state $cur$, and follow the suffix link.
     If at some point there already exists a transition through the letter $c$, then we will stop and denote this state with $p$.
-  - If it haven't found such a state $p$, then we reached the fictitious state $-1$, then we can just assign $link(cur) = 0$ and leave.
+  - If we haven't found such a state $p$, then we reached the fictitious state $-1$, then we can just assign $link(cur) = 0$ and leave.
   - Suppose now that we have found a state $p$, from which there exists a transition through the letter $c$.
     We will denote the state, to which the transition leads,  with $q$.
   - Now we have two cases. Either $len(p) + 1 = len(q)$, or not.
@@ -241,7 +241,7 @@ Let us describe this process:
 
   - In any of the three cases, after completing the procedure, we update the value $last$ with the state $cur$.
 
-If we also want to know which states are **terminal** and which are not, the we can find all terminal states after constructing the complete suffix automaton for the entire string $s$.
+If we also want to know which states are **terminal** and which are not, we can find all terminal states after constructing the complete suffix automaton for the entire string $s$.
 To do this, we take the state corresponding to the entire string (stored in the variable $last$), and follow its suffix links until we reach the initial state.
 We will mark all visited states as terminal.
 It is easy to understand that by doing so we will mark exactly the states corresponding to all the suffixes of the string $s$, which are exactly the terminal states.
@@ -280,7 +280,7 @@ The linearity of the number of transitions, and in general the linearity of the 
 
   - In the second case we came across an existing transition $(p, q)$.
     This means that we tried to add a string $x + c$ (where $x$ is a suffix of $s$) to the machine that **already exists** in the machine (the string $x + c$ already appears as a substring of $s$).
-    Since we assume that the automaton for the string $s$ is build correctly, we should not add a new transition here.
+    Since we assume that the automaton for the string $s$ is built correctly, we should not add a new transition here.
 
     However there is a difficulty.
     To which state should the suffix link from the state $cur$ lead?
@@ -324,7 +324,7 @@ If we consider all parts of the algorithm, then it contains three places in the 
   - The second place is the copying of transitions when the state $q$ is cloned into a new state $clone$.
   - Third place is changing the transition leading to $q$, redirecting them to $clone$.
 
-We use the fact that the size of the suffix automaton (both in number of states and in the number of transitions) is **linear**.
+We use the fact that the size of the suffix automaton (both in the number of states and in the number of transitions) is **linear**.
 (The proof of the linearity of the number of states is the algorithm itself, and the proof of linearity of the number of states is given below, after the implementation of the algorithm).
 
 Thus the total complexity of the **first and second places** is obvious, after all each operation adds only one amortized new transition to the automaton.
@@ -334,7 +334,7 @@ We denote $v = longest(p)$.
 This is a suffix of the string $s$, and with each iteration its length decreases - and therefore the position $v$ as the suffix of the string $s$ increases monotonically with each iteration.
 In this case, if before the first iteration of the loop, the corresponding string $v$ was at the depth $k$ ($k \ge 2$) from $last$ (by counting the depth as the number of suffix links), then after the last iteration the string $v + c$ will be a $2$-th suffix link on the path from $cur$ (which will become the new value $last$).
 
-Thus, each iteration of this loop leads to the fact that the position of the string $longest(link(link(last))$ as suffix of the current string will monotonically increase.
+Thus, each iteration of this loop leads to the fact that the position of the string $longest(link(link(last))$ as a suffix of the current string will monotonically increase.
 Therefore this cycle cannot be executed more than $n$ iterations, which was required to prove.
 
 ### Implementation
@@ -444,7 +444,7 @@ Let the current non-continuous transition be $(p, q)$ with the character $c$.
 We take the correspondent string $u + c + w$, where the string $u$ corresponds to the longest path from the initial state to $p$, and $w$ to the longest path from $q$ to any terminal state.
 On one hand, each such string $u + c + w$ for each incomplete strings will be different (since the strings $u$ and $w$ are formed only by complete transitions).
 On the other hand each such string $u + c + w$, by the definition of the terminal states, will be a suffix of the entire string $s$.
-Since there are only $n$ non-empty suffixes of $s$, and non of the strings $u + c + w$ can contain $s$ (because the entire string only contains complete transitions), the total number of incomplete transitions does not exceed $n - 1$.
+Since there are only $n$ non-empty suffixes of $s$, and none of the strings $u + c + w$ can contain $s$ (because the entire string only contains complete transitions), the total number of incomplete transitions does not exceed $n - 1$.
 
 Combining these two estimates gives us the bound $3n - 3$.
 However, since the maximum number of states can only be achieved with the test case $\text{"abbb\dots bbb"}$ and this case has clearly less than $3n - 3$ transitions, we get the tighter bound of $3n - 4$ for the number of transitions in a suffix automaton.
@@ -460,7 +460,7 @@ For the simplicity we assume that the alphabet size $k$ is constant, which allow
 
 ### Check for occurrence
 
-Given a text $T$, and multiple patters $P$.
+Given a text $T$, and multiple patterns $P$.
 We have to check whether or not the strings $P$ appear as a substring of $T$.
 
 We build a suffix automaton of the text $T$ in $O(length(T))$ time.
@@ -494,6 +494,24 @@ The number of different substrings is the value $d[t_0] - 1$ (since we don't cou
 
 Total time complexity: $O(length(S))$
 
+
+Alternatively, we can take advantage of the fact that each state $v$ matches to substrings of length $[minlen(v),len(v)]$.
+Therefore, given $minlen(v) = 1 + len(link(v))$, we have total distinct substrings at state $v$ being $len(v) - minlen(v) + 1 = len(v) - (1 + len(link(v))) + 1 = len(v) - len(link(v))$.
+
+This is demonstrated succinctly below:
+
+```cpp
+long long get_diff_strings(){
+    long long tot = 0;
+    for(int i = 1; i < sz; i++) {
+        tot += st[i].len - st[st[i].link].len;
+    }
+    return tot;
+}
+```
+
+While this is also $O(length(S))$, it requires no extra space and no recursive calls, consequently running faster in practice.
+
 ### Total length of all different substrings
 
 Given a string $S$.
@@ -507,9 +525,29 @@ The value $ans[v]$ can be computed using the recursion:
 
 $$ans[v] = \sum_{w : (v, w, c) \in DAWG} d[w] + ans[w]$$
 
-We take the answer of each adjacent vertex $w$, and add to it $d[w]$ (since every substrings is one character longer when starting from the state $v$).
+We take the answer of each adjacent vertex $w$, and add to it $d[w]$ (since every substring is one character longer when starting from the state $v$).
 
 Again this task can be computed in $O(length(S))$ time.
+
+Alternatively, we can, again, take advantage of the fact that each state $v$ matches to substrings of length $[minlen(v),len(v)]$.
+Since $minlen(v) = 1 + len(link(v))$ and the arithmetic series formula $S_n = n \cdot \frac{a_1+a_n}{2}$ (where $S_n$ denotes the sum of $n$ terms, $a_1$ representing the first term, and $a_n$ representing the last), we can compute the length of substrings at a state in constant time.  We then sum up these totals for each state $v \neq t_0$ in the automaton. This is shown by the code below:
+
+```cpp
+long long get_tot_len_diff_substings() {
+    long long tot = 0;
+    for(int i = 1; i < sz; i++) {
+        long long shortest = st[st[i].link].len + 1;
+        long long longest = st[i].len;
+        
+        long long num_strings = longest - shortest + 1;
+        long long cur = num_strings * (longest + shortest) / 2;
+        tot += cur;
+    }
+    return tot;
+}
+```
+
+This approach runs in  $O(length(S))$ time, but experimentally runs 20x faster than the memoized dynamic programming version on randomized strings. It requires no extra space and no recursion.
 
 ### Lexicographically $k$-th substring {data-toc-label="Lexicographically k-th substring"}
 
@@ -517,7 +555,7 @@ Given a string $S$.
 We have to answer multiple queries.
 For each given number $K_i$ we have to find the $K_i$-th string in the lexicographically ordered list of all substrings.
 
-The solution of this problem is based on the idea of the previous two problems.
+The solution to this problem is based on the idea of the previous two problems.
 The lexicographically $k$-th substring corresponds to the lexicographically $k$-th path in the suffix automaton.
 Therefore after counting the number of paths from each state, we can easily search for the $k$-th path starting from the root of the automaton.
 
@@ -539,7 +577,7 @@ Total time complexity is $O(length(S))$.
 
 For a given text $T$.
 We have to answer multiple queries.
-For each given pattern $P$ we have to find out how many times the string $P$ appears in the string $T$ as substring.
+For each given pattern $P$ we have to find out how many times the string $P$ appears in the string $T$ as a substring.
 
 We construct the suffix automaton for the text $T$.
 
@@ -558,14 +596,14 @@ $$cnt[link(v)] \text{ += } cnt[v]$$
 This gives the correct value for each state.
 
 Why is this correct?
-The total stats obtained not obtained by cloning are exactly $length(T)$, and the first $i$ of them appeared when we added the first $i$ characters.
+The total number of states obtained _not_ via cloning is exactly $length(T)$, and the first $i$ of them appeared when we added the first $i$ characters.
 Consequently for each of these states we count the corresponding position at which it was processed.
 Therefore initially we have $cnt = 1$ for each such state, and $cnt = 0$ for all other.
 
 Then we apply the following operation for each $v$: $cnt[link(v)] \text{ += } cnt[v]$.
 The meaning behind this is, that if a string $v$ appears $cnt[v]$ times, then also all its suffixes appear at the exact same end positions, therefore also $cnt[v]$ times.
 
-Why don't we overcount in this procedure (i.e. don't count some position twice)?
+Why don't we overcount in this procedure (i.e. don't count some positions twice)?
 Because we add the positions of a state to only one other state, so it can not happen that one state directs its positions to another state twice in two different ways.
 
 Thus we can compute the quantities $cnt$ for all states in the automaton in $O(length(T))$ time.
@@ -613,7 +651,9 @@ In other words we need to find all the states that can reach the state $t$ via s
 Therefore to solve the problem we need to save for each state a list of suffix references leading to it.
 The answer to the query then will then contain all $firstpos$ for each state that we can find on a DFS / BFS starting from the state $t$ using only the suffix references.
 
-This workaround will work in time $O(answer(P))$, because we will not visit a state twice (because only one suffix link leaves each state, so there cannot be two different paths leading to the same state).
+Overall, this requires $O(length (T))$ for preprocessing and $O(length(P) + answer(P))$ for each request, where $answer(P)$ — this is the size of the answer.
+
+First, we walk down the automaton for each character in the pattern to find our starting node requiring $O(length(P))$.  Then, we use our workaround which will work in time $O(answer(P))$, because we will not visit a state twice (because only one suffix link leaves each state, so there cannot be two different paths leading to the same state).
 
 We only must take into account that two different states can have the same $firstpos$ value.
 This happens if one state was obtained by cloning another.
@@ -650,7 +690,7 @@ void output_all_occurrences(int v, int P_length) {
 ### Shortest non-appearing string
 
 Given a string $S$ and a certain alphabet.
-We have to find a string of smallest length, that doesn't appear in $S$.
+We have to find a string of the smallest length, that doesn't appear in $S$.
 
 We will apply dynamic programming on the suffix automaton built for the string $S$.
 
@@ -666,7 +706,7 @@ The answer to the problem will be $d[t_0]$, and the actual string can be restore
 ### Longest common substring of two strings
 
 Given two strings $S$ and $T$.
-We have to find the longest common substring, i.e. such a string $X$ that appears as substring in $S$ and also in $T$.
+We have to find the longest common substring, i.e. such a string $X$ that appears as a substring in $S$ and also in $T$.
 
 We construct a suffix automaton for the string $S$.
 
@@ -702,7 +742,7 @@ string lcs (string S, string T) {
     for (int i = 0; i < T.size(); i++) {
         while (v && !st[v].next.count(T[i])) {
             v = st[v].link ;
-            l = st[v].length ;
+            l = st[v].len;
         }
         if (st[v].next.count(T[i])) {
             v = st [v].next[T[i]];
@@ -737,6 +777,13 @@ After that, the answer to the problem will be the string $longest(v)$ for the st
 
 ## Practice Problems
 
+  - [CSES - Finding Patterns](https://cses.fi/problemset/task/2102)
+  - [CSES - Counting Patterns](https://cses.fi/problemset/task/2103)
+  - [CSES - String Matching](https://cses.fi/problemset/task/1753)
+  - [CSES - Patterns Positions](https://cses.fi/problemset/task/2104)
+  - [CSES - Distinct Substrings](https://cses.fi/problemset/task/2105)
+  - [CSES - Word Combinations](https://cses.fi/problemset/task/1731)
+  - [CSES - String Distribution](https://cses.fi/problemset/task/2110)
   - [AtCoder - K-th Substring](https://atcoder.jp/contests/abc097/tasks/arc097_a)
   - [SPOJ - SUBLEX](https://www.spoj.com/problems/SUBLEX/)
   - [Codeforces - Cyclical Quest](https://codeforces.com/problemset/problem/235/C)

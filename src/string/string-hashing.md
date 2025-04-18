@@ -16,7 +16,7 @@ Doing this allows us to reduce the execution time of the string comparison to $O
 
 For the conversion, we need a so-called **hash function**.
 The goal of it is to convert a string into an integer, the so-called **hash** of the string.
-The following condition has to hold: if two strings $s$ and $t$ are equal ($s = t$), then also their hashes have to be equal ($\text{hash}(s) = \text{hash}(t)$).
+The following condition has to hold: if two strings $s$ and $t$ are equal ($s = t$), then their hashes also have to be equal ($\text{hash}(s) = \text{hash}(t)$).
 Otherwise, we will not be able to compare strings.
 
 Notice, the opposite direction doesn't have to hold.
@@ -142,7 +142,7 @@ By doing this, we get both the hashes multiplied by the same power of $p$ (which
 Here are some typical applications of Hashing:
 
 * [Rabin-Karp algorithm](rabin-karp.md) for pattern matching in a string in $O(n)$ time
-* Calculating the number of different substrings of a string in $O(n^2 \log n)$ (see below)
+* Calculating the number of different substrings of a string in $O(n^2)$ (see below)
 * Calculating the number of palindromic substrings in a string.
 
 ### Determine the number of different substrings in a string
@@ -173,7 +173,7 @@ int count_unique_substrings(string const& s) {
 
     int cnt = 0;
     for (int l = 1; l <= n; l++) {
-        set<long long> hs;
+        unordered_set<long long> hs;
         for (int i = 0; i <= n - l; i++) {
             long long cur_h = (h[i + l] + m - h[i]) % m;
             cur_h = (cur_h * p_pow[n-i-1]) % m;
@@ -184,6 +184,9 @@ int count_unique_substrings(string const& s) {
     return cnt;
 }
 ```
+
+Notice, that $O(n^2)$ is not the best possible time complexity for this problem.
+A solution with $O(n \log n)$ is described in the article about [Suffix Arrays](suffix-array.md), and it's even possible to compute it in $O(n)$ using a [Suffix Tree](./suffix-tree-ukkonen.md) or a [Suffix Automaton](./suffix-automaton.md).
 
 ## Improve no-collision probability
 
@@ -204,6 +207,7 @@ When comparing $10^6$ strings with each other, the probability that at least one
 ## Practice Problems
 * [Good Substrings - Codeforces](https://codeforces.com/contest/271/problem/D)
 * [A Needle in the Haystack - SPOJ](http://www.spoj.com/problems/NHAY/)
+* [String Hashing - Kattis](https://open.kattis.com/problems/hashing)
 * [Double Profiles - Codeforces](http://codeforces.com/problemset/problem/154/C)
 * [Password - Codeforces](http://codeforces.com/problemset/problem/126/B)
 * [SUB_PROB - SPOJ](http://www.spoj.com/problems/SUB_PROB/)

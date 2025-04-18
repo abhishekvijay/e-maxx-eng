@@ -18,8 +18,7 @@ The weakness of the given algorithm is in using more memory than the classic sie
 
 Thus, it makes sense to use the described algorithm only until for numbers of order $10^7$ and not greater.
 
-The algorithm's authorship appears to belong to Gries & Misra (Gries, Misra, 1978: see references in the end of the article).
-However it can also be attributed to Euler, and is also known as Euler's Sieve, who already used a similar version of it during his work.
+The algorithm is due to Paul Pritchard. It is a variant of Algorithm 3.3 in (Pritchard, 1987: see references in the end of the article).
 
 ## Algorithm
 
@@ -56,9 +55,12 @@ for (int i=2; i <= N; ++i) {
 		lp[i] = i;
 		pr.push_back(i);
 	}
-	for (int j=0; j < (int)pr.size() && pr[j] <= lp[i] && i*pr[j] <= N; ++j) {
+	for (int j = 0; i * pr[j] <= N; ++j) {
 		lp[i * pr[j]] = pr[j];
-    }
+		if (pr[j] == lp[i]) {
+			break;
+		}
+	}
 }
 ```
 
@@ -85,7 +87,7 @@ In practice the linear sieve runs about as fast as a typical implementation of t
 
 In comparison to optimized versions of the sieve of Erathosthenes, e.g. the segmented sieve, it is much slower.
 
-Considering the memory requirements of this algorithm - an array $lp []$ of length $n$, and an array of $pr []$ of length  $\frac n {\ln n}$, this algorithm seems to worse than the classic sieve in every way.
+Considering the memory requirements of this algorithm - an array $lp []$ of length $n$, and an array of $pr []$ of length  $\frac n {\ln n}$, this algorithm seems to be worse than the classic sieve in every way.
 
 However, its redeeming quality is that this algorithm calculates an array $lp []$, which allows us to find factorization of any number in the segment $[2; n]$ in the time of the size order of this factorization. Moreover, using just one extra array will allow us to avoid divisions when looking for factorization.
 
@@ -93,4 +95,4 @@ Knowing the factorizations of all numbers is very useful for some tasks, and thi
 
 ## References
 
-- David Gries, Jayadev Misra. **A Linear Sieve Algorithm for Finding Prime Numbers** [1978]
+- Paul Pritchard, **Linear Prime-Number Sieves: a Family Tree**, Science of Computer Programming, vol. 9 (1987), pp.17-35.

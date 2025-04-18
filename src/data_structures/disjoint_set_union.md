@@ -98,7 +98,7 @@ The trick is to make the paths for all those nodes shorter, by setting the paren
 You can see the operation in the following image.
 On the left there is a tree, and on the right side there is the compressed tree after calling `find_set(7)`, which shortens the paths for the visited nodes 7, 5, 3 and 2.
 
-![Path compression of call `find_set(7)`](DSU_path_compression.png)
+![Path compression of call find_set(7)](DSU_path_compression.png)
 
 The new implementation of `find_set` is as follows:
 
@@ -375,13 +375,13 @@ If we add an edge $(a, b)$ that connects two connected components into one, then
 
 Let's derive a formula, which computes the parity issued to the leader of the set that will get attached to another set.
 Let $x$ be the parity of the path length from vertex $a$ up to its leader $A$, and $y$ as the parity of the path length from vertex $b$ up to its leader $B$, and $t$ the desired parity that we have to assign to $B$ after the merge.
-The path contains the of the three parts:
+The path consists of the three parts:
 from $B$ to $b$, from $b$ to $a$, which is connected by one edge and therefore has parity $1$, and from $a$ to $A$.
 Therefore we receive the formula ($\oplus$ denotes the XOR operation):
 
 $$t = x \oplus y \oplus 1$$
 
-Thus regardless of how many joins we perform, the parity of the edges is carried from on leader to another.
+Thus regardless of how many joins we perform, the parity of the edges is carried from one leader to another.
 
 We give the implementation of the DSU that supports parity. As in the previous section we use a pair to store the ancestor and the parity. In addition for each set we store in the array `bipartite[]` whether it is still bipartite or not.
 
@@ -544,7 +544,7 @@ To efficiently combine multiple sets we just apply the above-described recipe:
 we merge the sets by simply adding smaller ones to larger.
 In the end we get a $O(n \log^2 n)$ solution, because one number will only added to a set at most $O(\log n)$ times.
 
-### Storing the DSU by maintaining a clear tree structure / Online bridge finding in $O(\alpha(n))$ on average  {data-toc-label="Storing the SDU by maintaining a clear tree structure / Online bridge finding"}
+### Storing the DSU by maintaining a clear tree structure / Online bridge finding in $O(\alpha(n))$ on average  {data-toc-label="Storing the DSU by maintaining a clear tree structure / Online bridge finding"}
 
 One of the most powerful applications of DSU is that it allows you to store both as **compressed and uncompressed trees**.
 The compressed form can be used for merging of trees and for the verification if two vertices are in the same tree, and the uncompressed form can be used - for example - to search for paths between two given vertices, or other traversals of the tree structure.
@@ -577,8 +577,6 @@ For the first time the evaluation of $O(\alpha(n))$ was shown in 1975 (Tarjan "E
 Later in 1985 he, along with Leeuwen, published multiple complexity analyses for several different rank heuristics and ways of compressing the path (Tarjan, Leeuwen "Worst-case Analysis of Set Union Algorithms").
 
 Finally in 1989 Fredman and Sachs proved that in the adopted model of computation **any** algorithm for the disjoint set union problem has to work in at least $O(\alpha(n))$ time on average (Fredman, Saks, "The cell probe complexity of dynamic data structures").
-
-However it should also be noted, that there are several articles **disputing** this provisional valuation and asserting that the DSU with path compression and Union by rank runs in $O(1)$ time on average (Zhang "The Union-Find Problem Is Linear", Wu, Otoo "A Simpler Proof of the Average Case Complexity of Union-Find with Path Compression").
 
 ## Problems
 

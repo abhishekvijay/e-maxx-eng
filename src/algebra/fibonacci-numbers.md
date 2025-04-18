@@ -50,7 +50,7 @@ such that $k_1 \ge k_2 + 2,\ k_2 \ge k_3 + 2,\  \ldots,\  k_r \ge 2$ (i.e.: the 
 
 It follows that any number can be uniquely encoded in the Fibonacci coding.
 And we can describe this representation with binary codes $d_0 d_1 d_2 \dots d_s 1$, where $d_i$ is $1$ if $F_{i+2}$ is used in the representation.
-The code will be appended by a $1$ do indicate the end of the code word.
+The code will be appended by a $1$ to indicate the end of the code word.
 Notice that this is the only occurrence where two consecutive 1-bits appear.
 
 $$\begin{eqnarray}
@@ -74,9 +74,8 @@ The encoding of an integer $n$ can be done with a simple greedy algorithm:
 
 To decode a code word, first remove the final $1$. Then, if the $i$-th bit is set (indexing from 0 from the leftmost to the rightmost bit), sum $F_{i+2}$ to the number.
 
-## Formulas for the $n^{\text{th}}$ Fibonacci number { data-toc-label="Formulas for the <script type='math/tex'>n</script>-th Fibonacci number" }
 
-The $n$-th Fibonacci number can be easily found in $O(n)$ by computing the numbers one by one up to $n$. However, there are also faster ways, as we will see.
+## Formulas for the $n^{\text{th}}$ Fibonacci number { data-toc-label="Formulas for the <script type='math/tex'>n</script>-th Fibonacci number" }
 
 ### Closed-form expression
 
@@ -94,30 +93,146 @@ where the square brackets denote rounding to the nearest integer.
 
 As these two formulas would require very high accuracy when working with fractional numbers, they are of little use in practical calculations.
 
+### Fibonacci in linear time
+
+The $n$-th Fibonacci number can be easily found in $O(n)$ by computing the numbers one by one up to $n$. However, there are also faster ways, as we will see.
+
+We can start from an iterative approach, to take advantage of the use of the formula $F_n = F_{n-1} + F_{n-2}$, therefore, we will simply precalculate those values in an array. Taking into account the base cases for $F_0$ and $F_1$.
+
+```{.cpp file=fibonacci_linear}
+int fib(int n) {
+    int a = 0;
+    int b = 1;
+    for (int i = 0; i < n; i++) {
+        int tmp = a + b;
+        a = b;
+        b = tmp;
+    }
+    return a;
+}
+```
+
+In this way, we obtain a linear solution, $O(n)$ time, saving all the values prior to $n$ in the sequence.
+
 ### Matrix form
 
-It is easy to prove the following relation:
+To go from $(F_n, F_{n-1})$ to $(F_{n+1}, F_n)$, we can express the linear recurrence as a 2x2 matrix multiplication:
 
-$$\begin{pmatrix}F_{n-1} & F_{n} \cr\end{pmatrix} = \begin{pmatrix}F_{n-2} & F_{n-1} \cr\end{pmatrix} \cdot \begin{pmatrix}0 & 1 \cr 1 & 1 \cr\end{pmatrix}$$
+$$
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+F_n \\
+F_{n-1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+F_n + F_{n-1}  \\
+F_{n}
+\end{pmatrix}
+=
+\begin{pmatrix}
+F_{n+1}  \\
+F_{n}
+\end{pmatrix}
+$$
 
-Denoting $P \equiv \begin{pmatrix}0 & 1 \cr 1 & 1 \cr\end{pmatrix}$, we have:
+This lets us treat iterating the recurrence as repeated matrix multiplication, which has nice properties. In particular,
 
-$$\begin{pmatrix}F_n & F_{n+1} \cr\end{pmatrix} = \begin{pmatrix}F_0 & F_1 \cr\end{pmatrix} \cdot P^n$$
+$$
+\begin{pmatrix}
+1 & 1 \\
+1 & 0
+\end{pmatrix}^n
+\begin{pmatrix}
+F_1 \\
+F_0
+\end{pmatrix}
+=
+\begin{pmatrix}
+F_{n+1}  \\
+F_{n}
+\end{pmatrix}
+$$
 
-Thus, in order to find $F_n$, we must raise the matrix $P$ to $n$. This can be done in $O(\log n)$ (see [Binary exponentiation](binary-exp.md)).
+where $F_1 = 1, F_0 = 0$.
+
+Thus, in order to find $F_n$ in $O(\log  n)$ time, we must raise the matrix to n. (See [Binary exponentiation](binary-exp.md))
+
+```{.cpp file=fibonacci_matrix}
+struct matrix {
+    long long mat[2][2];
+    matrix friend operator *(const matrix &a, const matrix &b){
+        matrix c;
+        for (int i = 0; i < 2; i++) {
+          for (int j = 0; j < 2; j++) {
+              c.mat[i][j] = 0;
+              for (int k = 0; k < 2; k++) {
+                  c.mat[i][j] += a.mat[i][k] * b.mat[k][j];
+              }
+          }
+        }
+        return c;
+    }
+};
+
+matrix matpow(matrix base, long long n) {
+    matrix ans{ {
+      {1, 0},
+      {0, 1}
+    } };
+    while (n) {
+        if(n&1)
+            ans = ans*base;
+        base = base*base;
+        n >>= 1;
+    }
+    return ans;
+}
+
+long long fib(int n) {
+    matrix base{ {
+      {1, 1},
+      {1, 0}
+    } };
+    return matpow(base, n).mat[0][1];
+}
+```
 
 ### Fast Doubling Method
 
-Using above method we can find these equations:
+By expanding the above matrix expression for $n = 2\cdot k$
 
-$$ \begin{array}{rll}
-                        F_{2k} &= F_k \left( 2F_{k+1} - F_{k} \right). \\
-                        F_{2k+1} &= F_{k+1}^2 + F_{k}^2.
-\end{array}$$
+$$
+\begin{pmatrix}
+F_{2k+1} & F_{2k}\\
+F_{2k} & F_{2k-1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1\\
+1 & 0
+\end{pmatrix}^{2k}
+=
+\begin{pmatrix}
+F_{k+1} & F_{k}\\
+F_{k} & F_{k-1}
+\end{pmatrix}
+^2
+$$
+
+we can find these simpler equations:
+
+$$ \begin{align}
+F_{2k+1} &= F_{k+1}^2 + F_{k}^2 \\
+F_{2k} &= F_k(F_{k+1}+F_{k-1}) = F_k (2F_{k+1} - F_{k})\\
+\end{align}.$$
 
 Thus using above two equations Fibonacci numbers can be calculated easily by the following code:
 
-```cpp
+```{.cpp file=fibonacci_doubling}
 pair<int, int> fib (int n) {
     if (n == 0)
         return {0, 1};
@@ -135,15 +250,15 @@ The above code returns $F_n$ and $F_{n+1}$ as a pair.
 
 ## Periodicity modulo p
 
-Consider the Fibonacci sequence modulo $p$. We will prove the sequence is periodic and the period begins with $F_1 = 1$ (that is, the pre-period contains only $F_0$).
+Consider the Fibonacci sequence modulo $p$. We will prove the sequence is periodic.
 
 Let us prove this by contradiction. Consider the first $p^2 + 1$ pairs of Fibonacci numbers taken modulo $p$:
 
-$$(F_1,\ F_2),\ (F_2,\ F_3),\ \ldots,\ (F_{p^2 + 1},\ F_{p^2 + 2})$$
+$$(F_0,\ F_1),\ (F_1,\ F_2),\ \ldots,\ (F_{p^2},\ F_{p^2 + 1})$$
 
-There can only be $p$ different remainders modulo $p$, and at most $p^2$ different remainders, so there are at least two identical pairs among them. Thus the sequence is periodic.
+There can only be $p$ different remainders modulo $p$, and at most $p^2$ different pairs of remainders, so there are at least two identical pairs among them. This is sufficient to prove the sequence is periodic, as a Fibonacci number is only determined by its two predecessors. Hence if two pairs of consecutive numbers repeat, that would also mean the numbers after the pair will repeat in the same fashion.
 
-We now choose two pairs of identical remainders with the smallest indices in the sequence. Let the pairs be $(F_a,\ F_{a + 1})$ and $(F_b,\ F_{b + 1})$. We will prove that $a = 1$. If this was false, there would be two previous pairs $(F_{a-1},\ F_a)$ and $(F_{b-1},\ F_b)$, which, by the property of Fibonacci numbers, would also be equal. However, this contradicts the fact that we had chosen pairs with the smallest indices, completing our proof.
+We now choose two pairs of identical remainders with the smallest indices in the sequence. Let the pairs be $(F_a,\ F_{a + 1})$ and $(F_b,\ F_{b + 1})$. We will prove that $a = 0$. If this was false, there would be two previous pairs $(F_{a-1},\ F_a)$ and $(F_{b-1},\ F_b)$, which, by the property of Fibonacci numbers, would also be equal. However, this contradicts the fact that we had chosen pairs with the smallest indices, completing our proof that there is no pre-period (i.e the numbers are periodic starting from $F_0$).
 
 ## Practice Problems
 
@@ -153,4 +268,11 @@ We now choose two pairs of identical remainders with the smallest indices in the
 * [Project Euler - Even Fibonacci numbers](https://www.hackerrank.com/contests/projecteuler/challenges/euler002/problem)
 * [DMOJ - Fibonacci Sequence](https://dmoj.ca/problem/fibonacci)
 * [DMOJ - Fibonacci Sequence (Harder)](https://dmoj.ca/problem/fibonacci2)
-
+* [DMOJ UCLV - Numbered sequence of pencils](https://dmoj.uclv.edu.cu/problem/secnum)
+* [DMOJ UCLV - Fibonacci 2D](https://dmoj.uclv.edu.cu/problem/fibonacci)
+* [DMOJ UCLV - fibonacci calculation](https://dmoj.uclv.edu.cu/problem/fibonaccicalculatio)
+* [LightOJ -  Number Sequence](https://lightoj.com/problem/number-sequence)
+* [Codeforces - C. Fibonacci](https://codeforces.com/problemset/gymProblem/102644/C)
+* [Codeforces - A. Hexadecimal's theorem](https://codeforces.com/problemset/problem/199/A)
+* [Codeforces - B. Blackboard Fibonacci](https://codeforces.com/problemset/problem/217/B)
+* [Codeforces - E. Fibonacci Number](https://codeforces.com/problemset/problem/193/E)

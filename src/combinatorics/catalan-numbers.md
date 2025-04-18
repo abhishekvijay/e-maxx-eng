@@ -9,7 +9,7 @@ Catalan numbers is a number sequence, which is found useful in a number of combi
 
 This sequence was named after the Belgian mathematician [Catalan](https://en.wikipedia.org/wiki/Eug%C3%A8ne_Charles_Catalan), who lived in the 19th century. (In fact it was known before to Euler, who lived a century before Catalan).
 
-The first few numbers Catalan numbers, $C_n$ (starting from zero):
+The first few Catalan numbers $C_n$ (starting from zero):
 
  $1, 1, 2, 5, 14, 42, 132, 429, 1430, \ldots$
 
@@ -47,7 +47,7 @@ You can also think it in this manner. By definition, $C_n$ denotes number of cor
 
 $( ) ( ( ) )$ can be divided into $( )$ and $( ( ) )$, but cannot be divided into $( ) ($ and $( ) )$. Again summing over all admissible $k's$, we get the recurrence relation on $C_n$.
 
-#### C++ implementation <span class="toggle-code">Show/Hide</span>
+#### C++ implementation 
 
 ```cpp
 const int MOD = ....

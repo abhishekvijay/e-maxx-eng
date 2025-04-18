@@ -1,13 +1,18 @@
+---
+search:
+  exclude: true
+---
+
 - Home
     - [Main Page](index.md)
     - [Navigation](navigation.md)
     - [Tag index](tags.md)
     - [How to Contribute](contrib.md)
+    - [Code of conduct](code_of_conduct.md)
     - [Preview](preview.md)
 - Algebra
     - Fundamentals
         - [Binary Exponentiation](algebra/binary-exp.md)
-        - [Factoring Exponentiation](algebra/factoring-exp.md)
         - [Euclidean algorithm for computing the greatest common divisor](algebra/euclid-algorithm.md)
         - [Extended Euclidean Algorithm](algebra/extended-euclid-algorithm.md)
         - [Linear Diophantine Equations](algebra/linear-diophantine-equation.md)
@@ -24,6 +29,7 @@
         - [Modular Inverse](algebra/module-inverse.md)
         - [Linear Congruence Equation](algebra/linear_congruence_equation.md)
         - [Chinese Remainder Theorem](algebra/chinese-remainder-theorem.md)
+        - [Garner's Algorithm](algebra/garners-algorithm.md)
         - [Factorial modulo p](algebra/factorial-modulo.md)
         - [Discrete Log](algebra/discrete-log.md)
         - [Primitive Root](algebra/primitive-root.md)
@@ -33,11 +39,13 @@
         - [Balanced Ternary](algebra/balanced-ternary.md)
         - [Gray code](algebra/gray-code.md)
     - Miscellaneous
+        - [Bit manipulation](algebra/bit-manipulation.md)
         - [Enumerating submasks of a bitmask](algebra/all-submasks.md)
         - [Arbitrary-Precision Arithmetic](algebra/big-integer.md)
         - [Fast Fourier transform](algebra/fft.md)
         - [Operations on polynomials and series](algebra/polynomial.md)
         - [Continued fractions](algebra/continued-fractions.md)
+        - [Factoring Exponentiation](algebra/factoring-exp.md)
 - Data Structures
     - Fundamentals
         - [Minimum Stack / Minimum Queue](data_structures/stack_queue_modification.md)
@@ -53,6 +61,8 @@
     - Advanced
         - [Deleting from a data structure in O(T(n) log n)](data_structures/deleting_in_log_n.md)
 - Dynamic Programming
+    - [Introduction to Dynamic Programming](dynamic_programming/intro-to-dp.md)
+    - [Knapsack Problem](dynamic_programming/knapsack.md)
     - DP optimizations
         - [Divide and Conquer DP](dynamic_programming/divide-and-conquer-dp.md)
         - [Knuth's Optimization](dynamic_programming/knuth-optimization.md)
@@ -97,6 +107,7 @@
         - [Counting labeled graphs](combinatorics/counting_labeled_graphs.md)
 - Numerical Methods
     - Search
+        - [Binary Search](num_methods/binary_search.md)
         - [Ternary Search](num_methods/ternary_search.md)
         - [Newton's method for finding roots](num_methods/roots_newton.md)
     - Integration
@@ -124,12 +135,15 @@
         - [Convex hull trick and Li Chao tree](geometry/convex_hull_trick.md)
     - Sweep-line
         - [Search for a pair of intersecting segments](geometry/intersecting_segments.md)
+    - Planar graphs
+        - [Finding faces of a planar graph](geometry/planar.md)
         - [Point location in O(log N)](geometry/point-location.md)
     - Miscellaneous
         - [Finding the nearest pair of points](geometry/nearest_points.md)
         - [Delaunay triangulation and Voronoi diagram](geometry/delaunay.md)
         - [Vertical decomposition](geometry/vertical_decomposition.md)
         - [Half-plane intersection - S&I Algorithm in O(N log N)](geometry/halfplane-intersection.md)
+        - [Manhattan Distance](geometry/manhattan-distance.md)
 - Graphs
     - Graph traversal
         - [Breadth First Search](graph/breadth-first-search.md)
@@ -179,6 +193,7 @@
     - Matchings and related problems
         - [Bipartite Graph Check](graph/bipartite-check.md)
         - [Kuhn's Algorithm - Maximum Bipartite Matching](graph/kuhn_maximum_bipartite_matching.md)
+        - [Hungarian Algorithm](graph/hungarian-algorithm.md)
     - Miscellaneous
         - [Topological Sorting](graph/topological-sort.md)
         - [Edge connectivity / Vertex connectivity](graph/edge_vertex_connectivity.md)
@@ -191,6 +206,7 @@
         - [Longest increasing subsequence](sequences/longest_increasing_subsequence.md)
         - [Search the subsegment with the maximum/minimum sum](others/maximum_average_segment.md)
         - [K-th order statistic in O(N)](sequences/k-th.md)
+        - [MEX task (Minimal Excluded element in an array)](sequences/mex.md)
     - Game Theory
         - [Games on arbitrary graphs](game_theory/games_on_graphs.md)
         - [Sprague-Grundy theorem. Nim](game_theory/sprague-grundy-nim.md)
@@ -199,6 +215,7 @@
         - [Scheduling jobs on two machines](schedules/schedule_two_machines.md)
         - [Optimal schedule of jobs given their deadlines and durations](schedules/schedule-with-completion-duration.md)
     - Miscellaneous
+        - [Tortoise and Hare Algorithm (Linked List cycle detection)](others/tortoise_and_hare.md)
         - [Josephus problem](others/josephus_problem.md)
         - [15 Puzzle Game: Existence Of The Solution](others/15-puzzle.md)
         - [The Stern-Brocot Tree and Farey Sequences](others/stern_brocot_tree_farey_sequences.md)
