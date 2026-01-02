@@ -34,7 +34,7 @@ And precomputed prefix sums can compute sum queries in $O(1)$, but updating an a
 
 We can take a divide-and-conquer approach when it comes to array segments. 
 We compute and store the sum of the elements of the whole array, i.e. the sum of the segment $a[0 \dots n-1]$. 
-We then split the array into two halves $a[0 \dots n/2-1]$ and $a[n/2 \dots n-1]$ and compute the sum of each halve and store them. 
+We then split the array into two halves $a[0 \dots (n-1)/2]$ and $a[(n+1)/2 \dots n-1]$ and compute the sum of each halve and store them. 
 Each of these two halves in turn are split in half, and so on until all segments reach size $1$. 
 
 We can view these segments as forming a binary tree: 
@@ -659,7 +659,7 @@ But notice, that this uses three times more memory than a normal Merge Sort Tree
 It is straightforward to apply this technique to a problem, that doesn't require any modification queries.
 The two positions are just integers and can easily be computed by counting when merging the two sorted sequences.
 
-It it still possible to also allow modification queries, but that complicates the entire code.
+It is still possible to also allow modification queries, but that complicates the entire code.
 Instead of integers, you need to store the sorted array as `multiset`, and instead of indices you need to store iterators.
 And you need to work very carefully, so that you increment or decrement the correct iterators during a modification query.
 
